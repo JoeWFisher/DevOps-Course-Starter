@@ -12,7 +12,10 @@
     <h2>Items</h2>
     <ul class="list-group mb-4">
       {% for todo in todos %}
-      <li>{{ todo.title }} - {{ todo.status }}</li>
+      <li>
+        {{ todo.title }} - {{ todo.status }}
+        <a href="/index/update/{{ todo.id }}">Mark Complete</a>
+      </li>
       {% endfor %}
     </ul>
   </div>

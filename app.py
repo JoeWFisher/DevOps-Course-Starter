@@ -7,6 +7,7 @@ app.config.from_object('flask_config.Config')
 @app.route('/index', methods=['Get', 'Put'])
 def index():
     todos = session.get_items()
+    todos = sorted(todos, key=lambda k: k['status'], reverse=True)
     return render_template('index.html', todos = todos)
 
 @app.route('/index/add', methods=['Post'])

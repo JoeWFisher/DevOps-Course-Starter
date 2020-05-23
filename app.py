@@ -21,5 +21,11 @@ def update_status(todo_id):
     session.save_item(item)
     return redirect('/index')
 
+@app.route('/index/delete/<int:todo_id>', methods=['Get', 'Delete'])
+def remove_item(todo_id):
+    item = session.get_item(todo_id)
+    session.delete_item(item)
+    return redirect('/index')
+
 if __name__ == '__main__':
     app.run()

@@ -12,20 +12,29 @@
     <h2>Items</h2>
     <ul class="list-group mb-4">
       {% for todo in todos %}
-      <li class="list-group-item">
-        {{ todo.title }} - {{ todo.status }}
-        <a class="btn btn-outline-success btn-sm" href="/index/update/{{ todo.id }}" style="float: right">Mark Complete</a>
-        <a class="btn btn-outline-danger btn-sm" href="/index/delete/{{ todo.id }}" style="float: right">Delete Item</a>
-      </li>
+        {% if todo.status == 'Not Started' %}
+          <li class="list-group-item">
+            {{ todo.title }} - {{ todo.status }}
+            <div style="float: right;">
+              <a class="btn btn-outline-danger btn-sm" href="/index/delete/{{ todo.id }}">Delete Item</a>
+              <a class="btn btn-outline-success btn-sm" href="/index/update/{{ todo.id }}">Mark Complete</a>
+            </div>  
+          </li>
+        {% else %}
+          <li class="list-group-item list-group-item-dark">{{ todo.title }} - {{ todo.status }}
+            <a class="btn btn-outline-danger btn-sm" href="/index/delete/{{ todo.id }}" style="float: right">Delete Item</a>
+          </li>
+        {% endif %}
       {% endfor %}
     </ul>
   </div>
   <form action="/index/add" method="POST">
-    <ul>
-      <label for='title'>Item:</label>
-      <input type="text" id="title" name="title">
-      <button type="submit">Add todo</button>
-    </ul>
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <button class="btn btn-outline-secondary" type="submit" id="title">Add Item</button>
+      </div>
+      <input type="text" id="title" name="title" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
+    </div>
   </form>
 </div>
 {% endblock %}

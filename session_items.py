@@ -70,9 +70,6 @@ def save_item(item):
 
 def delete_item(id):
     existing_items = get_items()
-    updated_list = []
-    for item in existing_items:
-        if int(id) != item['id']:
-            updated_list.append(item)
+    updated_list = [item for item in existing_items if item['id'] != int(id)]
     session['items'] = updated_list    
     return

@@ -6,7 +6,7 @@ app.config.from_object('flask_config.Config')
 
 @app.route('/')
 def index():
-    return 'Hello World!'
+    return 'Hello Test!'
 
 if __name__ == '__main__':
     app.run()

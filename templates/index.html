@@ -11,7 +11,11 @@
     <div class="col-md-12">
       <h2>Items</h2>
       <ul class="list-group mb-4">
-        <!-- List the todo items here -->
+        {% for todolist in list %}
+            <li>
+                {{todolist.status}} - {{todolist.title}}</li>
+                <a href="/list/{{ todolist.id }}">View Details</a> 
+        {% endfor %}
       </ul>
     </div>
   </div>

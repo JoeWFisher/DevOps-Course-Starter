@@ -54,6 +54,23 @@ def add_item(title):
     return item
 
 
+def remove_item(id):
+    """
+    Remove Item form a given index
+
+    Args:
+        ID: The id of the item.
+
+    Returns:
+        item: List of items.
+    """
+    items = get_items()
+
+    del items[id]
+    session['items'] = items
+
+    return items
+
 def save_item(item):
     """
     Updates an existing item in the session. If no existing item matches the ID of the specified item, nothing is saved.

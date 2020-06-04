@@ -13,10 +13,20 @@
       <ul class="list-group mb-4">
         {% for todolist in list %}
             <li>
-                {{todolist.status}} - {{todolist.title}}</li>
-                <a href="/list/{{ todolist.id }}">View Details</a> 
+                {{todolist.status}} - 
+                {{todolist.title}} -
+              <a href="/complete/{{ todolist.id }}">Mark Complete</a> -
+              <a href="/delete/{{ todolist.id }}">Delete</a>
+              </li> 
         {% endfor %}
       </ul>
     </div>
   </div>
+
+  <form action="/" method="POST">
+    <p>Enter new to-do item</p>
+    <p><input type="text" name="todoitem"></p>
+    <p><input type="submit" value="Submit"></p>
+  </form>
+
 {% endblock %}

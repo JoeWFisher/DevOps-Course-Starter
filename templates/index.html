@@ -15,20 +15,30 @@
         {% if todo.status == 'Not Started' %}
           <li class="list-group-item">
             {{ todo.title }} - {{ todo.status }}
-            <div style="float: right;">
-              <a class="btn btn-outline-danger btn-sm" href="/index/delete/{{ todo.id }}">Delete Item</a>
-              <a class="btn btn-outline-success btn-sm" href="/index/update/{{ todo.id }}">Mark Complete</a>
-            </div>  
+            <form action="/delete/{{ todo.id }}" method="POST">
+              <div style="float: right;">
+                <button class="btn btn-outline-danger btn-sm" type ="submit" id="delete">Delete Item</button>
+              </div>
+            </form>
+            <form action="/update/{{ todo.id }}" method="POST">
+              <div style="float: right;">
+                <button class="btn btn-outline-success btn-sm" type ="submit" id="update">Mark Complete</button>
+              </div> 
+            </form>
           </li>
         {% else %}
-          <li class="list-group-item list-group-item-dark">{{ todo.title }} - {{ todo.status }}
-            <a class="btn btn-outline-danger btn-sm" href="/index/delete/{{ todo.id }}" style="float: right">Delete Item</a>
-          </li>
+        <li class="list-group-item list-group-item-dark">{{ todo.title }} - {{ todo.status }}
+          <form action="/delete/{{ todo.id }}" method="POST">
+            <div style="float: right;">
+              <button class="btn btn-outline-danger btn-sm" type ="submit" id="delete">Delete Item</button>
+            </div>
+          </form>
+        </li>
         {% endif %}
       {% endfor %}
     </ul>
   </div>
-  <form action="/index/add" method="POST">
+  <form action="/add" method="POST">
     <div class="input-group mb-3">
       <div class="input-group-prepend">
         <button class="btn btn-outline-secondary" type="submit" id="title">Add Item</button>

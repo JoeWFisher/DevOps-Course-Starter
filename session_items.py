@@ -64,12 +64,8 @@ def remove_item(id):
     Returns:
         item: List of items.
     """
-    items = get_items()
-
-    del items[id]
-    session['items'] = items
-
-    return items
+    session['items'] = [item for item in get_items() if item['id'] != id]
+    
 
 def save_item(item):
     """

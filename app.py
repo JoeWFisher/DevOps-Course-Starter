@@ -6,13 +6,13 @@ app.config.from_object('flask_config.Config')
 
 @app.route('/')
 def index():
-
     return render_template('index.html', list=session.get_items())
 
 @app.route('/delete/<int:id>')
 def delete_task(id):
     session.remove_item(id)
-    return render_template('index.html', list=session.get_items())
+    return redirect('/')
+    #return render_template('index.html', list=session.get_items())
 
 @app.route('/complete/<int:id>')
 def complete_task(id):

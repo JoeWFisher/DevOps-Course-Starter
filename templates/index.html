@@ -2,17 +2,49 @@
 {% block title %}To-Do App{% endblock %}
 
 {% block content %}
-  <div class="jumbotron">
-    <h1 class="display-4">To-Do App</h1>
-    <p class="lead">Just another to-do app.</p>
-  </div>
+<div class="jumbotron">
+  <h1 class="display-4">To-Do App</h1>
+  <p class="lead">Just another to-do app.</p>
+</div>
 
-  <div class="row">
-    <div class="col-md-12">
-      <h2>Items</h2>
-      <ul class="list-group mb-4">
-        <!-- List the todo items here -->
-      </ul>
-    </div>
+<div class="row">
+  <div class="col-md-12">
+    <h2>Items</h2>
+    <ul class="list-group mb-4">
+      {% for todo in todos %}
+        {% if todo.status == 'Not Started' %}
+          <li class="list-group-item">
+            {{ todo.title }} - {{ todo.status }}
+            <form action="/delete/{{ todo.id }}" method="POST">
+              <div style="float: right;">
+                <button class="btn btn-outline-danger btn-sm" type ="submit" id="delete">Delete Item</button>
+              </div>
+            </form>
+            <form action="/update/{{ todo.id }}" method="POST">
+              <div style="float: right;">
+                <button class="btn btn-outline-success btn-sm" type ="submit" id="update">Mark Complete</button>
+              </div> 
+            </form>
+          </li>
+        {% else %}
+        <li class="list-group-item list-group-item-dark">{{ todo.title }} - {{ todo.status }}
+          <form action="/delete/{{ todo.id }}" method="POST">
+            <div style="float: right;">
+              <button class="btn btn-outline-danger btn-sm" type ="submit" id="delete">Delete Item</button>
+            </div>
+          </form>
+        </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
   </div>
+  <form action="/add" method="POST">
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <button class="btn btn-outline-secondary" type="submit" id="title">Add Item</button>
+      </div>
+      <input type="text" id="title" name="title" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
+    </div>
+  </form>
+</div>
 {% endblock %}

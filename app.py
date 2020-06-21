@@ -13,7 +13,7 @@ def index():
 
 @app.route('/add', methods=['Post'])
 def add_todo():
-    session.add_item(request.form.get('title'))
+    trello.create_new_card(request.form.get('title'))
     return redirect('/')
 
 @app.route('/update/<int:todo_id>', methods=['Post'])

@@ -21,4 +21,13 @@ def fetch_all_cards():
     return cards
     
 
-fetch_all_cards()
+def create_new_card(name):
+    params = (
+        ('key', KEY),
+        ('token', TOKEN),
+        ('name', name),
+        ('idList', '5eef26d392d5ac04eb7c007c')
+    )
+
+    response = requests.post('https://api.trello.com/1/cards', params=params)
+

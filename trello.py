@@ -28,30 +28,23 @@ def create_new_card(name):
         ('idList', '5eef26d392d5ac04eb7c007c')
     )
 
-    r = requests.post('https://api.trello.com/1/cards', params=params)
+    requests.post('https://api.trello.com/1/cards', params=params)
 
 def update_card(id):
-    headers = {
-        'Accept': 'application/json'
-    }
-    
-    params = {
-        'id': id,
-        'key': KEY,
-        'token': TOKEN,
-        'idList': '5eef26d3edf8473b06a305ff'
-    }
+    params = (
+        ('key', KEY),
+        ('token', TOKEN),
+        ('idList', '5eef26d3edf8473b06a305ff')
+    )    
 
-    r = requests.put('https://api.trello.com/1/cards/{id}/', params=params, headers=headers)
-    print(r.text)
-    print(r.url)
+    requests.put("https://api.trello.com/1/cards/" + id, params=params)
 
 def delete_card(id):
-    params = {
-        'key': KEY,
-        'token': TOKEN
-    }
+    params = (
+        ('key', KEY),
+        ('token', TOKEN)
+    )    
 
-    r = requests.delete("https://api.trello.com/1/cards/{id}", params=params)
-    print(r.text)
+    r = requests.delete("https://api.trello.com/1/cards/" + id, params=params)
 
+#update_card('5eef319da76ce3363a32156f')

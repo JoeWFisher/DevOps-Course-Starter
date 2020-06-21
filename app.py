@@ -16,12 +16,12 @@ def add_todo():
     trello.create_new_card(request.form.get('title'))
     return redirect('/')
 
-@app.route('/update/<int:todo_id>', methods=['Post','Put'])
+@app.route('/complete_item/<todo_id>', methods=['Post'])
 def update_status(todo_id):
     trello.update_card(todo_id)
     return redirect('/')
 
-@app.route('/delete/<int:todo_id>', methods=['Post','Delete'])
+@app.route('/delete/<todo_id>', methods=['Post'])
 def remove_item(todo_id):
     trello.delete_card(todo_id)
     return redirect('/')

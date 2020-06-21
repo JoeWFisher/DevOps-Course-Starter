@@ -1,12 +1,13 @@
 from flask import Flask, render_template, request, redirect, url_for
 import session_items as session
+import trello as trello
 
 app = Flask(__name__)
 app.config.from_object('flask_config.Config')
 
 @app.route('/', methods=['Get'])
 def index():
-    todos = session.get_items()
+    todos = trello.fetch_all_cards()
     todos = sorted(todos, key=lambda k: k['status'], reverse=True)
     return render_template('index.html', todos = todos)
 

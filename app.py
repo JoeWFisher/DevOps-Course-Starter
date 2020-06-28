@@ -8,7 +8,7 @@ app.config.from_object('flask_config.Config')
 @app.route('/', methods=['Get'])
 def index():
     todos = trello.fetch_all_cards()
-    todos = sorted(todos, key=lambda k: k['status'], reverse=True)
+    todos.sort(key=lambda k: k['status'], reverse=True)
     return render_template('index.html', todos = todos)
 
 @app.route('/add', methods=['Post'])

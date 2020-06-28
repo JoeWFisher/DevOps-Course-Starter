@@ -2,6 +2,14 @@ from config import KEY, TOKEN, BoardID
 import requests 
 import json
 
+class Item:
+    def __init__(self, id, status, title):
+        self.id = id
+        self.title = title
+        self.status = status
+
+item_list = []
+
 def fetch_all_cards():
     params = (
         ('key', KEY),
@@ -10,15 +18,21 @@ def fetch_all_cards():
     )
 
     r = requests.get('https://api.trello.com/1/boards/5eef26d3f3a754437122f88b/cards', params=params)
-    cards = r.json()
-    for card in cards:
+    data = r.json()
+    for card in data:
+        if card['idList'] == '5eef26d392d5ac04eb7c007c':
+            card['idList'] = 'Not Started'
+        elif card['idList'] == '5eef26d3edf8473b06a305ff':
+            card['idList'] = 'Complete'
         card['title'] = card.pop('name')
         card['status'] = card.pop('idList')
-        if card['status'] == '5eef26d392d5ac04eb7c007c':
-            card['status'] = 'Not Started'
-        elif card['status'] == '5eef26d3edf8473b06a305ff':
-            card['status'] = 'Complete'
-    return cards  
+
+    item_list = data
+        # if [item for item in item_list if item.id == card['id']]:
+        #     pass
+        # else:
+        #     item_list.append(Item(id=card['id'], status=card['idList'], title=card['name']))
+    return item_list
 
 def create_new_card(name):
     params = (
@@ -47,4 +61,3 @@ def delete_card(id):
 
     r = requests.delete("https://api.trello.com/1/cards/" + id, params=params)
 
-#update_card('5eef319da76ce3363a32156f')

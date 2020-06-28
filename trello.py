@@ -8,9 +8,7 @@ class Item:
         self.title = title
         self.status = status
 
-item_list = []
-
-def fetch_all_cards():
+def fetch_all_items():
     params = (
         ('key', KEY),
         ('token', TOKEN),
@@ -27,14 +25,14 @@ def fetch_all_cards():
         card['title'] = card.pop('name')
         card['status'] = card.pop('idList')
 
-    item_list = data
+    Item = data
         # if [item for item in item_list if item.id == card['id']]:
         #     pass
         # else:
         #     item_list.append(Item(id=card['id'], status=card['idList'], title=card['name']))
-    return item_list
+    return Item
 
-def create_new_card(name):
+def create_new_item(name):
     params = (
         ('key', KEY),
         ('token', TOKEN),
@@ -44,7 +42,7 @@ def create_new_card(name):
 
     requests.post('https://api.trello.com/1/cards', params=params)
 
-def update_card(id):
+def update_item(id):
     params = (
         ('key', KEY),
         ('token', TOKEN),
@@ -53,7 +51,7 @@ def update_card(id):
 
     requests.put("https://api.trello.com/1/cards/" + id, params=params)
 
-def delete_card(id):
+def delete_item(id):
     params = (
         ('key', KEY),
         ('token', TOKEN)

@@ -1,4 +1,4 @@
-from config import KEY, TOKEN, BoardID
+from config import KEY, TOKEN, BoardID, TTD, DO
 import requests 
 import json
 
@@ -20,9 +20,9 @@ def fetch_all_cards():
     r = requests.get('https://api.trello.com/1/boards/5eef26d3f3a754437122f88b/cards', params=params)
     data = r.json()
     for card in data:
-        if card['idList'] == '5eef26d392d5ac04eb7c007c':
+        if card['idList'] == TTD:
             card['idList'] = 'Not Started'
-        elif card['idList'] == '5eef26d3edf8473b06a305ff':
+        elif card['idList'] == DO:
             card['idList'] = 'Complete'
         card['title'] = card.pop('name')
         card['status'] = card.pop('idList')
@@ -39,7 +39,7 @@ def create_new_card(name):
         ('key', KEY),
         ('token', TOKEN),
         ('name', name),
-        ('idList', '5eef26d392d5ac04eb7c007c')
+        ('idList', TTD)
     )
 
     requests.post('https://api.trello.com/1/cards', params=params)
@@ -48,7 +48,7 @@ def update_card(id):
     params = (
         ('key', KEY),
         ('token', TOKEN),
-        ('idList', '5eef26d3edf8473b06a305ff')
+        ('idList', DO)
     )    
 
     requests.put("https://api.trello.com/1/cards/" + id, params=params)

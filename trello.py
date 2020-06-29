@@ -8,7 +8,6 @@ class Item:
         self.title = title
         self.status = status
 
-item_list = []
 
 def fetch_all_items():
     params = (
@@ -19,6 +18,7 @@ def fetch_all_items():
 
     r = requests.get('https://api.trello.com/1/boards/5eef26d3f3a754437122f88b/cards', params=params)
     data = r.json()
+    item_list = []
     for card in data:
         if card['idList'] == TTD:
             card['idList'] = 'Not Started'
@@ -56,5 +56,5 @@ def delete_item(id):
         ('token', TOKEN)
     )    
 
-    r = requests.delete("https://api.trello.com/1/cards/" + id, params=params)
+    requests.delete("https://api.trello.com/1/cards/" + id, params=params)
 

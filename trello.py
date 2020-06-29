@@ -8,6 +8,8 @@ class Item:
         self.title = title
         self.status = status
 
+item_list = []
+
 def fetch_all_items():
     params = (
         ('key', KEY),
@@ -22,15 +24,12 @@ def fetch_all_items():
             card['idList'] = 'Not Started'
         elif card['idList'] == DO:
             card['idList'] = 'Complete'
-        card['title'] = card.pop('name')
-        card['status'] = card.pop('idList')
 
-    Item = data
-        # if [item for item in item_list if item.id == card['id']]:
-        #     pass
-        # else:
-        #     item_list.append(Item(id=card['id'], status=card['idList'], title=card['name']))
-    return Item
+        if [item for item in item_list if item.id == card['id']]:
+            pass
+        else:
+            item_list.append(Item(id=card['id'], status=card['idList'], title=card['name']))
+    return item_list   
 
 def create_new_item(name):
     params = (

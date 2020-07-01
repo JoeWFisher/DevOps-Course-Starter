@@ -117,4 +117,4 @@ env/
 
 
 # Trello API config
-config.py
+trello_config.py

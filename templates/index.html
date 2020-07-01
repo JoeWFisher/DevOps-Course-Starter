@@ -30,7 +30,7 @@
                 {{ item.title }}
               </td>
               <td>
-                <a href="/toggle-completion/{{item.id}}">Complete</a>
+                <a href={{url_for("toggle", id=item.id)}}>Complete</a>
               </td>
               <td>
                 <a href="/delete/{{item.id}}">Remove</a>
@@ -39,12 +39,11 @@
           {% endif %}  
         {% endfor %}
       </table> 
-      <form action="/" method="post">
+      <form method="post">
         <br>
-          <label for="title">Title: </label>
-          <input type="text" id="title" name="title">
-          <button type="submit">Add item</button>
-        </br>
+        <label for="title">Title: </label>
+        <input type="text" id="title" name="title">
+        <button type="submit">Add item</button>
       </form>
     </div>
   </div>

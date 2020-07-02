@@ -8,7 +8,7 @@ app.config.from_object('flask_config.Config')
 @app.route('/', methods=['GET', 'POST'])
 def index(): 
     if request.method == 'POST':
-        trello.add_item(request.form.get('title'))
+        trello.add_item(request.form.get('title'), request.form.get('description'))
     return render_template('/index.html', all_items=trello.get_items())
 
 @app.route('/toggle-completion/<id>')

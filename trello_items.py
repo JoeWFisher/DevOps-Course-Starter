@@ -4,25 +4,28 @@ import json
 from flask import session  
 
 class Item:
-    def __init__(self, id, name, list_id):
-        self.id = id
-        self.title = name
-        if list_id == PENDING:
+    def __init__(self, card):
+        self.id = card['id']
+        self.title = card['name']
+        if card['idList'] == PENDING:
             self.status = 'Not Started'
-        elif list_id == DONE:
+        elif card['idList'] == DONE:
             self.status = 'Completed'
+        if card['desc'] != 'None':
+            self.description = card['desc']
+
 
 def get_items():
     response = requests.get('https://api.trello.com/1/boards/{id}/cards?key={key}&token={token}'.format(id=BOARD, key=KEY, token=TOKEN))
-    all_items = [Item(item['id'], item['name'], item['idList']) for item in response.json()]
+    all_items = [Item(item) for item in response.json()]
     return all_items
 
 def get_item(id):
     items = get_items()
     return next((item for item in items if item.id == id), None)
 
-def add_item(title):
-    requests.post('https://api.trello.com/1/cards?key={key}&token={token}&idList={listId}&name={name}'.format(key=KEY, token=TOKEN, listId=PENDING, name=title))
+def add_item(title, description):
+    requests.post('https://api.trello.com/1/cards?key={key}&token={token}&idList={listId}&name={name}&desc={desc}'.format(key=KEY, token=TOKEN, listId=PENDING, name=title, desc=description))
     return title
 
 def save_item(item):

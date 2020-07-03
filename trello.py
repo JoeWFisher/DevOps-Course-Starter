@@ -1,13 +1,7 @@
-from config import KEY, TOKEN, BoardID, TTD, DO
+from config import KEY, TOKEN, BoardID, ToDoId, DoneId
+import Item as it
 import requests 
 import json
-
-class Item:
-    def __init__(self, id, status, title):
-        self.id = id
-        self.title = title
-        self.status = status
-
 
 def fetch_all_items():
     params = (
@@ -16,19 +10,19 @@ def fetch_all_items():
         ('fields', 'name,idList')
     )
 
-    r = requests.get('https://api.trello.com/1/boards/5eef26d3f3a754437122f88b/cards', params=params)
+    r = requests.get('https://api.trello.com/1/boards/' + BoardID + '/cards', params=params)
     data = r.json()
     item_list = []
     for card in data:
-        if card['idList'] == TTD:
+        if card['idList'] == ToDoId:
             card['idList'] = 'Not Started'
-        elif card['idList'] == DO:
+        elif card['idList'] == DoneId:
             card['idList'] = 'Complete'
-
+        
         if [item for item in item_list if item.id == card['id']]:
             pass
         else:
-            item_list.append(Item(id=card['id'], status=card['idList'], title=card['name']))
+            item_list.append(it.Item(id=card['id'], status=card['idList'], title=card['name']))
     return item_list   
 
 def create_new_item(name):
@@ -36,7 +30,7 @@ def create_new_item(name):
         ('key', KEY),
         ('token', TOKEN),
         ('name', name),
-        ('idList', TTD)
+        ('idList', ToDoId)
     )
 
     requests.post('https://api.trello.com/1/cards', params=params)
@@ -45,7 +39,7 @@ def update_item(id):
     params = (
         ('key', KEY),
         ('token', TOKEN),
-        ('idList', DO)
+        ('idList', DoneId)
     )    
 
     requests.put("https://api.trello.com/1/cards/" + id, params=params)

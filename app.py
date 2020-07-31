@@ -2,7 +2,6 @@ from flask import Flask, render_template, request, redirect, url_for
 import trello as trello
 
 app = Flask(__name__)
-app.config.from_object('flask_config.Config')
 
 @app.route('/', methods=['Get'])
 def index():

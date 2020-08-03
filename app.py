@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 from operator import itemgetter 
 import trello_items as trello
-import view_model
+from view_model import ViewModel
 
 app = Flask(__name__)
 
@@ -9,11 +9,9 @@ app = Flask(__name__)
 def index():
     if request.method == 'POST':
         trello.add_item(request.form.get('title'), request.form.get('description'))
-    return render_template('/index.html', all_items=trello.get_items(), show_archive=False)
-
-@app.route('/archive', methods=['GET'])
-def archive(): 
-    return render_template('/index.html', all_items=trello.get_all_items(), show_archive=True)
+    items = trello.get_all_items()
+    item_view_model = ViewModel(items)
+    return render_template('index.html', view_model=item_view_model)
 
 @app.route('/set-status/<id>/<status>')
 def set_status(id, status):

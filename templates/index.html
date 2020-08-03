@@ -11,24 +11,24 @@
   <div class="col-md-12">
     <h2>Items</h2>
     <ul class="list-group mb-4">
-      {% for todo in todos %}
-        {% if todo.status == 'Not Started' %}
+      {% for item in view_model.items %}
+        {% if item.status == 'Not Started' %}
           <li class="list-group-item">
-            {{ todo.title }} - {{ todo.status }}
-            <form action="/delete/{{ todo.id }}" method="POST">
+            {{ item.title }} - {{ item.status }}
+            <form action="/delete/{{ item.id }}" method="POST">
               <div style="float: right;">
                 <button class="btn btn-outline-danger btn-sm" type ="submit" id="delete">Delete Item</button>
               </div>
             </form>
-            <form action="/complete_item/{{ todo.id }}" method="POST">
+            <form action="/complete_item/{{ item.id }}" method="POST">
               <div style="float: right;">
                 <button class="btn btn-outline-success btn-sm" type ="submit" id="complete_item">Mark Complete</button>
               </div> 
             </form>
           </li>
         {% else %}
-        <li class="list-group-item list-group-item-dark">{{ todo.title }} - {{ todo.status }}
-          <form action="/delete/{{ todo.id }}" method="POST">
+        <li class="list-group-item list-group-item-dark">{{ item.title }} - {{ item.status }}
+          <form action="/delete/{{ item.id }}" method="POST">
             <div style="float: right;">
               <button class="btn btn-outline-danger btn-sm" type ="submit" id="delete">Delete Item</button>
             </div>

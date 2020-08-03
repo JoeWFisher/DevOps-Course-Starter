@@ -1,31 +1,27 @@
 from flask import Flask, render_template, request, redirect, url_for
-import session_items as session
+import trello as trello
 
 app = Flask(__name__)
-app.config.from_object('flask_config.Config')
 
 @app.route('/', methods=['Get'])
 def index():
-    todos = session.get_items()
-    todos = sorted(todos, key=lambda k: k['status'], reverse=True)
+    todos = trello.fetch_all_items()
+    todos.sort(key=lambda k: k.status, reverse=True)
     return render_template('index.html', todos = todos)
 
 @app.route('/add', methods=['Post'])
 def add_todo():
-    session.add_item(request.form.get('title'))
+    trello.create_new_item(request.form.get('title'))
     return redirect('/')
 
-@app.route('/update/<int:todo_id>', methods=['Post'])
+@app.route('/complete_item/<todo_id>', methods=['Post'])
 def update_status(todo_id):
-    item = session.get_item(todo_id)
-    item['status'] = 'Completed'
-    session.save_item(item)
+    trello.update_item(todo_id)
     return redirect('/')
 
-@app.route('/delete/<int:todo_id>', methods=['Post'])
+@app.route('/delete/<todo_id>', methods=['Post'])
 def remove_item(todo_id):
-    item = session.get_item(todo_id)
-    session.delete_item(item)
+    trello.delete_item(todo_id)
     return redirect('/')
 
 if __name__ == '__main__':

@@ -14,7 +14,10 @@ class Item:
             self.description = card['desc']
 
 def get_items():
-    response = requests.get('https://api.trello.com/1/boards/{id}/cards?key={key}&token={token}'.format(id=BOARD, key=KEY, token=TOKEN))
+    response = requests.get(
+        f'https://api.trello.com/1/boards/{BOARD}/cards',
+        params={'key':KEY, 'token':TOKEN},
+    )
     all_items = [Item(item) for item in response.json()]
     return all_items
 
@@ -23,7 +26,7 @@ def get_item(id):
     return next((item for item in items if item.id == id), None)
 
 def add_item(title, description):
-    requests.post('https://api.trello.com/1/cards?key={key}&token={token}&idList={listId}&name={name}&desc={desc}'.format(key=KEY, token=TOKEN, listId=PENDING, name=title, desc=description))
+    requests.post(f'https://api.trello.com/1/cards?key={KEY}&token={TOKEN}&idList={PENDING}&name={title}&desc={description}')
     return title
 
 def save_item(item):

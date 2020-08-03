@@ -12,39 +12,58 @@
       <h2>Items</h2>
       <table class="table table-borderless">
         {% for item in all_items %}
-          {% if item.status == 'Completed' %}
-            <tr class="table-dark">
-              <td>
-                <strong>{{ item.title }}</strong>
-              </td>
-              <td>
-                <a href="/toggle-completion/{{item.id}}">Reactivate</a>
-              </td>
-              <td>
-                <a href="/delete/{{item.id}}">Remove</a>
-              </td>
-            </tr>
-          {% else %}
+          {% if item.status == 'Not Started' %}
             <tr>
               <td>
                 <strong>{{ item.title }}</strong>
-                <br>
-                {% if item.due == '' %}
-                  Due: {{item.due}}
-                  <br>
-                {% endif %}
-                {{ item.description }}
+              </td>
+              <td>{{ item.status }}</td>
+              <td>
+                <a href={{url_for("set_status", id=item.id, status='pending')}}>Start</a>
               </td>
               <td>
-                <a href={{url_for("toggle", id=item.id)}}>Complete</a>
-              </td>
-              <td>
-                <a href="/delete/{{item.id}}">Remove</a>
+                <a href="/delete/{{item.id}}">Delete</a>
               </td>
             </tr>
+
+          {% elif item.status == 'In Progress' %}
+            <tr>
+              <td>
+                <strong>{{ item.title }}</strong>
+              </td>
+              <td>{{ item.status }}</td>
+              <td>
+                <a href={{url_for("set_status", id=item.id, status='outstanding')}}>Unstart</a> |
+                <a href={{url_for("set_status", id=item.id, status='completed')}}>Complete</a>
+              </td>
+              <td>
+                <a href="/delete/{{item.id}}">Delete</a>
+              </td>
+            </tr>
+        
+          {% elif item.status == 'Completed' %}
+          <tr class="table-dark">
+            <td>
+              <strong>{{ item.title }}</strong>
+            </td>
+            <td>{{ item.status }}</td>
+            <td>
+              <a href={{url_for("set_status", id=item.id, status='pending')}}>Restart</a>
+            </td>
+            <td>
+              <a href="/delete/{{item.id}}">Delete</a>
+            </td>
+          </tr>
+         
           {% endif %}  
         {% endfor %}
-      </table> 
+
+      </table>
+      {% if not show_archive %}
+        <a href="/archive">Show Archive</a>
+      {% else %}
+        <a href="/">Hide Archive</a>
+      {% endif %}
       <form method="post">
         <br>
         <label for="title">Title: </label>

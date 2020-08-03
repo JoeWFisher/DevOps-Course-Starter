@@ -1,7 +1,6 @@
 import requests
 from trello_config import KEY, TOKEN, BOARD, PENDING, DONE
-import json
-from flask import session  
+import json 
 
 class Item:
     def __init__(self, card):
@@ -13,7 +12,6 @@ class Item:
             self.status = 'Completed'
         if card['desc'] != 'None':
             self.description = card['desc']
-
 
 def get_items():
     response = requests.get('https://api.trello.com/1/boards/{id}/cards?key={key}&token={token}'.format(id=BOARD, key=KEY, token=TOKEN))

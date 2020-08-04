@@ -58,7 +58,7 @@ class TestFilters:
         
         # Act
         view = view_model.ViewModel(test_items)
-        filtered_items = view.show_all_done_items
+        filtered_items = view.all_done_items
         # Assert
         assert any(x.id == '9' for x in filtered_items)
         assert any(x.id == '10' for x in filtered_items)

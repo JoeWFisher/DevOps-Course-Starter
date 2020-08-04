@@ -17,7 +17,7 @@ class ViewModel:
         return [item for item in self._items if item.status == 'In Progress']
 
     @property
-    def show_all_done_items(self):
+    def all_done_items(self):
         return [item for item in self._items if item.status == 'Completed']
 
     @property

@@ -6,7 +6,6 @@
     <h1 class="display-4">To-Do App</h1>
     <p class="lead">Just another to-do app.</p>
   </div>
-
   <div class="row">
     <div class="col-md-12">
       <h2>Items</h2>
@@ -16,46 +15,74 @@
             <td>
               <strong>{{ item.title }}</strong>
             </td>
-            <td>{{ item.status }}</td>
             <td>
-              <a href={{url_for("set_status", id=item.id, status='pending')}}>Start</a>
-            </td>
-            <td>
+              <a href={{url_for("set_status", id=item.id, status='pending')}}>Start</a> | 
               <a href="/delete/{{item.id}}">Delete</a>
             </td>
           </tr>
         {% endfor %}
-
+      </table>
+      <table class="table table-borderless">
         {% for item in view_model.pending_items %}
           <tr>
             <td>
               <strong>{{ item.title }}</strong>
             </td>
-            <td>{{ item.status }}</td>
             <td>
               <a href={{url_for("set_status", id=item.id, status='outstanding')}}>Unstart</a> |
-              <a href={{url_for("set_status", id=item.id, status='completed')}}>Complete</a>
-            </td>
-            <td>
+              <a href={{url_for("set_status", id=item.id, status='completed')}}>Complete</a> | 
               <a href="/delete/{{item.id}}">Delete</a>
             </td>
           </tr>
         {% endfor %}
-
-        {% for item in view_model.completed_items %}
-          <tr class="table-dark">
-            <td>
-              <strong>{{ item.title }}</strong>
-            </td>
-            <td>{{ item.status }}</td>
-            <td>
-              <a href={{url_for("set_status", id=item.id, status='pending')}}>Restart</a>
-            </td>
-            <td>
-              <a href="/delete/{{item.id}}">Delete</a>
-            </td>
-          </tr>
-        {% endfor %}
+      </table>
+        {% if view_model.all_done_items|length < 6 %}
+          <table class="table table-borderless">
+            {% for item in view_model.all_done_items %}
+              <tr class="table-dark">
+                <td>
+                  <strong>{{ item.title }}</strong>
+                </td>
+                <td>
+                  <a href={{url_for("set_status", id=item.id, status='pending')}}>Restart</a> | 
+                  <a href="/delete/{{item.id}}">Delete</a>
+                </td>
+              </tr>
+            {% endfor %}
+          </table>
+        {% else %}
+          <table class="table table-borderless">
+            {% for item in view_model.recent_done_items %}
+              <tr class="table-dark">
+                <td>
+                  <strong>{{ item.title }}</strong>
+                </td>
+                <td>
+                  <a href={{url_for("set_status", id=item.id, status='pending')}}>Restart</a> | 
+                  <a href="/delete/{{item.id}}">Delete</a>
+                </td>
+              </tr>
+            {% endfor %}
+          </table>
+          {% if view_model.older_done_items|length > 0 %}
+            <details>
+              <summary>Show Older</summary>
+              <table class="table table-borderless">
+                {% for item in view_model.older_done_items %}
+                  <tr class="table-dark">
+                    <td>
+                      <strong>{{ item.title }}</strong>
+                    </td>
+                    <td>
+                      <a href={{url_for("set_status", id=item.id, status='pending')}}>Restart</a> | 
+                      <a href="/delete/{{item.id}}">Delete</a>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </table>
+            </details>
+          {% endif %}
+        {% endif %}
       </table>
 
       <form method="post">

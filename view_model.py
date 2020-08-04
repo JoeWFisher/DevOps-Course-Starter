@@ -17,5 +17,13 @@ class ViewModel:
         return [item for item in self._items if item.status == 'In Progress']
 
     @property
-    def completed_items(self):
+    def show_all_done_items(self):
         return [item for item in self._items if item.status == 'Completed']
+
+    @property
+    def recent_done_items(self):
+        return [item for item in self._items if item.status == 'Completed' and item.editDatetime.date() == datetime.date.today()]
+
+    @property
+    def older_done_items(self):
+        return [item for item in self._items if item.status == 'Completed' and item.editDatetime.date() < datetime.date.today()]

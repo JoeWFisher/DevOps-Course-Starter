@@ -1,4 +1,4 @@
-from config import KEY, TOKEN, BoardID, ToDoId, DoneId
+from config import KEY, TOKEN, BoardID, ToDoId, DoneId, DoingId
 import Item as it
 import requests 
 import json
@@ -16,6 +16,8 @@ def fetch_all_items():
     for card in data:
         if card['idList'] == ToDoId:
             card['idList'] = 'To Do'
+        elif card['idList'] == DoingId:
+            card['idList'] = 'Doing'
         elif card['idList'] == DoneId:
             card['idList'] = 'Done'
         
@@ -35,14 +37,23 @@ def create_new_item(name):
 
     requests.post('https://api.trello.com/1/cards', params=params)
 
-def update_item(id):
-    params = (
-        ('key', KEY),
-        ('token', TOKEN),
-        ('idList', DoneId)
-    )    
+def update_item_doing(id):
+        params = (
+            ('key', KEY),
+            ('token', TOKEN),
+            ('idList', DoingId)
+        )    
 
-    requests.put("https://api.trello.com/1/cards/" + id, params=params)
+        requests.put("https://api.trello.com/1/cards/" + id, params=params)
+    
+def update_item_done(id):    
+        params = (
+            ('key', KEY),
+            ('token', TOKEN),
+            ('idList', DoneId)
+        )    
+
+        requests.put("https://api.trello.com/1/cards/" + id, params=params)
 
 def delete_item(id):
     params = (

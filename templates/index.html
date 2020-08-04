@@ -11,37 +11,38 @@
     <div class="col-md-12">
       <h2>Items</h2>
       <table class="table table-borderless">
-        {% for item in view_model.items %}
-          {% if item.status == 'Not Started' %}
-            <tr>
-              <td>
-                <strong>{{ item.title }}</strong>
-              </td>
-              <td>{{ item.status }}</td>
-              <td>
-                <a href={{url_for("set_status", id=item.id, status='pending')}}>Start</a>
-              </td>
-              <td>
-                <a href="/delete/{{item.id}}">Delete</a>
-              </td>
-            </tr>
+        {% for item in view_model.outstanding_items %}
+          <tr>
+            <td>
+              <strong>{{ item.title }}</strong>
+            </td>
+            <td>{{ item.status }}</td>
+            <td>
+              <a href={{url_for("set_status", id=item.id, status='pending')}}>Start</a>
+            </td>
+            <td>
+              <a href="/delete/{{item.id}}">Delete</a>
+            </td>
+          </tr>
+        {% endfor %}
 
-          {% elif item.status == 'In Progress' %}
-            <tr>
-              <td>
-                <strong>{{ item.title }}</strong>
-              </td>
-              <td>{{ item.status }}</td>
-              <td>
-                <a href={{url_for("set_status", id=item.id, status='outstanding')}}>Unstart</a> |
-                <a href={{url_for("set_status", id=item.id, status='completed')}}>Complete</a>
-              </td>
-              <td>
-                <a href="/delete/{{item.id}}">Delete</a>
-              </td>
-            </tr>
-        
-          {% elif item.status == 'Completed' %}
+        {% for item in view_model.pending_items %}
+          <tr>
+            <td>
+              <strong>{{ item.title }}</strong>
+            </td>
+            <td>{{ item.status }}</td>
+            <td>
+              <a href={{url_for("set_status", id=item.id, status='outstanding')}}>Unstart</a> |
+              <a href={{url_for("set_status", id=item.id, status='completed')}}>Complete</a>
+            </td>
+            <td>
+              <a href="/delete/{{item.id}}">Delete</a>
+            </td>
+          </tr>
+        {% endfor %}
+
+        {% for item in view_model.completed_items %}
           <tr class="table-dark">
             <td>
               <strong>{{ item.title }}</strong>
@@ -54,16 +55,9 @@
               <a href="/delete/{{item.id}}">Delete</a>
             </td>
           </tr>
-         
-          {% endif %}  
         {% endfor %}
-
       </table>
-      {% if not show_archive %}
-        <a href="/archive">Show Archive</a>
-      {% else %}
-        <a href="/">Hide Archive</a>
-      {% endif %}
+
       <form method="post">
         <br>
         <label for="title">Title: </label>

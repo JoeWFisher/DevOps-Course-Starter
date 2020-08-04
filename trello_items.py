@@ -8,7 +8,7 @@ class Item:
     def __init__(self, card):
         self.id = card['id']
         self.title = card['name']
-        self.statusDatetime = parse(card['due'])
+        self.editDatetime = parse(card['dateLastActivity'])
         if card['idList'] == OUTSTANDING:
             self.status = 'Not Started'
         elif card['idList'] == PENDING:
@@ -17,11 +17,6 @@ class Item:
             self.status = 'Completed'
         if card['desc'] != 'None':
             self.description = card['desc']
-
-def get_items():
-    all_items = get_all_items()
-    filtered_items = [item for item in all_items if not (item.status == 'Completed' and item.statusDatetime.date() < datetime.date.today())]
-    return filtered_items
 
 def get_all_items():
     response = requests.get(
@@ -47,21 +42,18 @@ def add_item(title, description):
 def set_status_not_started(id):
     item = get_item(id)
     item.status = 'Not Started'
-    item.date = datetime.datetime.now()
     save_item(item)
     return
 
 def set_status_in_progress(id):
     item = get_item(id)
     item.status = 'In Progress'
-    item.date = datetime.datetime.now()
     save_item(item)
     return
 
 def set_status_completed(id):
     item = get_item(id)
     item.status = 'Completed'
-    item.date = datetime.datetime.now()
     save_item(item)
     return
 
@@ -70,11 +62,11 @@ def save_item(item):
         list_id = OUTSTANDING
     elif item.status == 'In Progress':
         list_id = PENDING
-    elif item.status == 'Completed':
+    else:
         list_id = DONE
     requests.put(
-        'https://api.trello.com/1/cards/{id}?key={key}&token={token}&name={name}&idList={listId}&due={due}'
-        .format(id=item.id, key=KEY, token=TOKEN, name=item.title, listId=list_id, due=item.date)
+        'https://api.trello.com/1/cards/{id}?key={key}&token={token}&name={name}&idList={listId}'
+        .format(id=item.id, key=KEY, token=TOKEN, name=item.title, listId=list_id)
     )
     return
 

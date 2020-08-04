@@ -15,9 +15,9 @@ def fetch_all_items():
     item_list = []
     for card in data:
         if card['idList'] == ToDoId:
-            card['idList'] = 'Not Started'
+            card['idList'] = 'To Do'
         elif card['idList'] == DoneId:
-            card['idList'] = 'Complete'
+            card['idList'] = 'Done'
         
         if [item for item in item_list if item.id == card['id']]:
             pass

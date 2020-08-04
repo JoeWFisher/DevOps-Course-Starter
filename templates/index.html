@@ -9,10 +9,9 @@
 
 <div class="row">
   <div class="col-md-12">
-    <h2>Items</h2>
+    <h2>To Do</h2>
     <ul class="list-group mb-4">
-      {% for item in view_model.items %}
-        {% if item.status == 'Not Started' %}
+      {% for item in view_model.todo_items %}
           <li class="list-group-item">
             {{ item.title }} - {{ item.status }}
             <form action="/delete/{{ item.id }}" method="POST">
@@ -26,15 +25,28 @@
               </div> 
             </form>
           </li>
-        {% else %}
-        <li class="list-group-item list-group-item-dark">{{ item.title }} - {{ item.status }}
+      {% endfor %}
+    <h2>Doing</h2>
+      {% for item in view_model.doing_items %}
+        <li class="list-group-item list-group-item-dark">
+          {{ item.title }} - {{ item.status }}
           <form action="/delete/{{ item.id }}" method="POST">
             <div style="float: right;">
               <button class="btn btn-outline-danger btn-sm" type ="submit" id="delete">Delete Item</button>
             </div>
           </form>
         </li>
-        {% endif %}
+      {% endfor %}
+    <h2>Done</h2>
+      {% for item in view_model.done_items %}
+        <li class="list-group-item list-group-item-dark">
+          {{ item.title }} - {{ item.status }}
+          <form action="/delete/{{ item.id }}" method="POST">
+            <div style="float: right;">
+              <button class="btn btn-outline-danger btn-sm" type ="submit" id="delete">Delete Item</button>
+            </div>
+          </form>
+        </li>
       {% endfor %}
     </ul>
   </div>

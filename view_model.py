@@ -19,7 +19,3 @@ class ViewModel:
     @property
     def completed_items(self):
         return [item for item in self._items if item.status == 'Completed']
-
-    @property
-    def archived_items(self):
-        return [item for item in self._items if item.status == 'Archived']

@@ -1,11 +1,22 @@
 import pytest
 import view_model
 import trello_items as trello
+import dotenv
+import app
 import datetime
 from trello_config import OUTSTANDING, PENDING, DONE
 from dateutil.parser import parse
 
 # TODO work out how to mock the today() method to always equal 04/08/2020
+
+@pytest.fixture
+def client():
+    file_path = dotenv.find_dotenv('.env.test')
+    dotenv.load_dotenv(file_path, override=True)
+    test_app = app.create_app()
+    with test_app.test_client() as client:
+        yield client
+
 
 @pytest.fixture
 def test_items():

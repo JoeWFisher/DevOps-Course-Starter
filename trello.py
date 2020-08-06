@@ -7,7 +7,7 @@ def fetch_all_items():
     params = (
         ('key', KEY),
         ('token', TOKEN),
-        ('fields', 'name,idList')
+        ('fields', 'name,idList,dateLastActivity')
     )
 
     r = requests.get('https://api.trello.com/1/boards/' + BoardID + '/cards', params=params)
@@ -24,7 +24,7 @@ def fetch_all_items():
         if [item for item in item_list if item.id == card['id']]:
             pass
         else:
-            item_list.append(it.Item(id=card['id'], status=card['idList'], title=card['name']))
+            item_list.append(it.Item(id=card['id'], status=card['idList'], title=card['name'], last_modified=card['dateLastActivity']))
     return item_list   
 
 def create_new_item(name):

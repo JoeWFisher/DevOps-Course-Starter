@@ -13,7 +13,7 @@
     <ul class="list-group mb-4">
       {% for item in view_model.todo_items %}
           <li class="list-group-item">
-            {{ item.title }} - {{ item.status }}
+            {{ item.title }} - {{ item.last_modified }}
             <form action="/delete/{{ item.id }}" method="POST">
               <div style="float: right;">
                 <button class="btn btn-outline-danger btn-sm" type ="submit" id="delete">Delete Item</button>
@@ -34,7 +34,7 @@
     <h2>Doing</h2>
       {% for item in view_model.doing_items %}
         <li class="list-group-item list-group-item-dark">
-          {{ item.title }} - {{ item.status }}
+          {{ item.title }} - {{ item.last_modified }}
           <form action="/delete/{{ item.id }}" method="POST">
             <div style="float: right;">
               <button class="btn btn-outline-danger btn-sm" type ="submit" id="delete">Delete Item</button>
@@ -48,9 +48,9 @@
         </li>
       {% endfor %}
     <h2>Done</h2>
-      {% for item in view_model.done_items %}
+      {% for item in view_model.show_all_done %}
         <li class="list-group-item list-group-item-dark">
-          {{ item.title }} - {{ item.status }}
+          {{ item.title }} - {{ item.last_modified }}
           <form action="/delete/{{ item.id }}" method="POST">
             <div style="float: right;">
               <button class="btn btn-outline-danger btn-sm" type ="submit" id="delete">Delete Item</button>
@@ -58,6 +58,21 @@
           </form>
         </li>
       {% endfor %}
+      <details>
+        <summary>Older Done Items</summary>
+        {% for item in view_model.older_done_items %}
+        <p>
+          <li class="list-group-item list-group-item-dark">
+            {{ item.title }} - {{ item.last_modified }}
+            <form action="/delete/{{ item.id }}" method="POST">
+              <div style="float: right;">
+                <button class="btn btn-outline-danger btn-sm" type="submit" id="delete">Delete Item</button>
+              </div>
+            </form>
+          </li>
+        {% endfor %}
+        </p>
+      </details>
     </ul>
   </div>
   <form action="/add" method="POST">

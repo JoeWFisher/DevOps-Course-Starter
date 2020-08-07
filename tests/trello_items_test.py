@@ -1,6 +1,6 @@
 import pytest
 import requests
-import dotenv
+from dotenv import load_dotenv, find_dotenv
 import app
 import trello_items as trello
 
@@ -11,7 +11,8 @@ class MockResponse:
     # TODO the enviroment variables are not updating, so I have put boardId = 'None' to make this URL condition work, but it should be 'mock_board_id'
 
     def json(self):
-        if self.url == 'https://api.trello.com/1/boards/None/lists':
+        #if self.url == 'https://api.trello.com/1/boards/mock_board_id/lists':
+        if self.url.startswith('https://api.trello.com/1/boards'):
             return [
                 {"id": "mock_list_id_not_started", "name": "Not Started"},
                 {"id": "mock_list_id_in_progress", "name": "In Progress"},
@@ -131,8 +132,8 @@ class MockResponse:
 
 @pytest.fixture
 def client():
-    file_path = dotenv.find_dotenv('.env.test')
-    dotenv.load_dotenv(file_path, override=True)
+    file_path = find_dotenv('.env.test')
+    load_dotenv(file_path, override=True)
     test_app = app.create_app()
     with test_app.test_client() as client:
         yield client
@@ -169,7 +170,3 @@ def test_mock_get_all_items(monkeypatch, client):
     assert trello.get_item('5f2d2a32a2a49e5639fe6eb6').title == 'Item 7'
     assert trello.get_item('5f2d2a3ccea4473780f1adea').title == 'Item 9'
     assert trello.get_item('5f2d2a450e99c347e8458c7b').title == 'Item 12'
-
-
-
-

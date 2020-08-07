@@ -96,7 +96,8 @@ def create_board(name):
     url = build_url('/boards/')
     response = requests.post(url, params=params)
     board = response.json()
-    return board['id']
+    board_id = board['id']
+    return board_id
 
 def delete_board(id):
     params = build_params()

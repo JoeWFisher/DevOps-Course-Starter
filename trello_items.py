@@ -12,9 +12,9 @@ def build_url(endpoint):
     return config.BASE_URL + endpoint
 
 def build_params(params = {}):
-    params = get_auth_params()
-    params.update(params)
-    return params
+    full_params = get_auth_params()
+    full_params.update(params)
+    return full_params
 
 def get_lists_info():
     params = build_params({ 'cards': 'open' })
@@ -27,6 +27,10 @@ def get_lists_info():
 def get_list_info(name):
     lists = get_lists_info()
     return next((list for list in lists if list['name'] == name), None)
+
+def get_list_id(name):
+    list_info = get_list_info(name)
+    return list_info['id']
 
 
 def get_items():
@@ -50,9 +54,10 @@ def get_item(id):
     return next((item for item in items if item.id == id), None)
 
 def add_item(title, description):
-    not_started_list_info = get_list_info('Not Started')
-    not_started_list_id = not_started_list_info['id']
-    requests.post(f'https://api.trello.com/1/cards?key={config.KEY}&token={config.TOKEN}&idList={not_started_list_id}&name={title}&desc={description}')
+    list_id = get_list_id('Not Started')
+    params = build_params({ 'name': title, 'idList': list_id })
+    url = build_url('/cards')
+    requests.post(url, params=params)
     return title
 
 def set_status_not_started(id):
@@ -74,15 +79,27 @@ def set_status_completed(id):
     return
 
 def save_item(item):
-    list_info = get_list_info(item.status)
-    list_id = list_info['id']
-    requests.put(
-        'https://api.trello.com/1/cards/{id}?key={key}&token={token}&name={name}&idList={listId}'
-        .format(id=item.id, key=config.KEY, token=config.TOKEN, name=item.title, listId=list_id)
-    )
+    list_id = get_list_id(item.status)
+    params = build_params({ 'name': item.title, 'dec': item.description, 'idList': list_id})
+    url = build_url(f'/cards/{item.id}')
+    requests.put(url, params=params)
     return
 
 def delete_item(id):
-    requests.delete('https://api.trello.com/1/cards/{id}?key={key}&token={token}'.format(id=id, key=config.KEY, token=config.TOKEN))   
+    params = build_params()
+    url = build_url(f'/cards/{id}')
+    requests.delete(url, params=params)  
     return
 
+def create_board(name):
+    params = build_params({ 'name': name })
+    url = build_url('/boards/')
+    response = requests.post(url, params=params)
+    board = response.json()
+    return board['id']
+
+def delete_board(id):
+    params = build_params()
+    url = build_url(f'/boards/{id}')
+    requests.delete(url, params=params)
+    return

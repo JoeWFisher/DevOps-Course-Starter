@@ -22,7 +22,6 @@ def get_lists_info():
 
     response = requests.get(url, params=params)
     lists = response.json()
-
     return lists
 
 def get_list_info(name):

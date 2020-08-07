@@ -1,24 +1,24 @@
-from config import KEY, TOKEN, BoardID, ToDoId, DoneId, DoingId
 import Item as it
 import requests 
 import json
+import os
 
 def fetch_all_items():
     params = (
-        ('key', KEY),
-        ('token', TOKEN),
+        ('key', os.environ['Key']),
+        ('token', os.environ['TOKEN']),
         ('fields', 'name,idList,dateLastActivity')
     )
 
-    r = requests.get('https://api.trello.com/1/boards/' + BoardID + '/cards', params=params)
+    r = requests.get('https://api.trello.com/1/boards/' + os.environ['BoardID'] + '/cards', params=params)
     data = r.json()
     item_list = []
     for card in data:
-        if card['idList'] == ToDoId:
+        if card['idList'] == os.environ['ToDoId']:
             card['idList'] = 'To Do'
-        elif card['idList'] == DoingId:
+        elif card['idList'] == os.environ['DoingId']:
             card['idList'] = 'Doing'
-        elif card['idList'] == DoneId:
+        elif card['idList'] == os.environ['DoneId']:
             card['idList'] = 'Done'
         
         if [item for item in item_list if item.id == card['id']]:
@@ -29,37 +29,55 @@ def fetch_all_items():
 
 def create_new_item(name):
     params = (
-        ('key', KEY),
-        ('token', TOKEN),
+        ('key', os.environ['Key']),
+        ('token', os.environ['TOKEN']),
         ('name', name),
-        ('idList', ToDoId)
+        ('idList', os.environ['ToDoId'])
     )
 
     requests.post('https://api.trello.com/1/cards', params=params)
 
 def update_item_doing(id):
         params = (
-            ('key', KEY),
-            ('token', TOKEN),
-            ('idList', DoingId)
+            ('key', os.environ['Key']),
+            ('token', os.environ['TOKEN']),
+            ('idList', os.environ['DoingId'])
         )    
 
         requests.put("https://api.trello.com/1/cards/" + id, params=params)
     
 def update_item_done(id):    
         params = (
-            ('key', KEY),
-            ('token', TOKEN),
-            ('idList', DoneId)
+            ('key', os.environ['Key']),
+            ('token', os.environ['TOKEN']),
+            ('idList', os.environ['DoneId'])
         )    
 
         requests.put("https://api.trello.com/1/cards/" + id, params=params)
 
 def delete_item(id):
     params = (
-        ('key', KEY),
-        ('token', TOKEN)
+        ('key', os.environ['Key']),
+        ('token', os.environ['TOKEN'])
     )    
 
     requests.delete("https://api.trello.com/1/cards/" + id, params=params)
 
+def create_trello_board():
+    params = (
+        ('key', os.environ['Key']),
+        ('token', os.environ['TOKEN']),
+        ('name', 'TestDevOps')
+    )    
+
+    response = requests.post("https://api.trello.com/1/boards/", params=params)
+
+    return response.json()['id']
+
+def delete_trello_board(id):
+    params = (
+        ('key', os.environ['Key']),
+        ('token', os.environ['TOKEN'])
+    )    
+
+    requests.delete("https://api.trello.com/1/boards/" + id, params=params)

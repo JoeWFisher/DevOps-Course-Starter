@@ -12,75 +12,80 @@
     <h2>To Do</h2>
     <ul class="list-group mb-4">
       {% for item in view_model.todo_items %}
-          <li class="list-group-item">
-            {{ item.title }} - {{ item.last_modified }}
-            <form action="/delete/{{ item.id }}" method="POST">
-              <div style="float: right;">
-                <button class="btn btn-outline-danger btn-sm" type ="submit" id="delete">Delete Item</button>
-              </div>
-            </form>
-            <form action="/doing_item/{{ item.id }}" method="POST">
-              <div style="float: right;">
-                <button class="btn btn-outline-success btn-sm" type ="submit" id="complete_item">Doing</button>
-              </div> 
-            </form>
-            <form action="/done_item/{{ item.id }}" method="POST">
-              <div style="float: right;">
-                <button class="btn btn-outline-success btn-sm" type ="submit" id="complete_item">Done</button>
-              </div> 
-            </form>
-          </li>
+      <li class="list-group-item">
+        {{ item.title }} - {{ item.last_modified }}
+        <form action="/delete/{{ item.id }}" method="POST">
+          <div style="float: right;">
+            <button class="btn btn-outline-danger btn-sm" type="submit" id="delete">Delete Item</button>
+          </div>
+        </form>
+        <form action="/doing_item/{{ item.id }}" method="POST">
+          <div style="float: right;">
+            <button class="btn btn-outline-success btn-sm" type="submit" id="make_doing_item">Doing</button>
+          </div>
+        </form>
+        <form action="/done_item/{{ item.id }}" method="POST">
+          <div style="float: right;">
+            <button class="btn btn-outline-success btn-sm" type="submit" id="make_done_item">Done</button>
+          </div>
+        </form>
+      </li>
       {% endfor %}
-    <h2>Doing</h2>
-      {% for item in view_model.doing_items %}
-        <li class="list-group-item list-group-item-dark">
-          {{ item.title }} - {{ item.last_modified }}
-          <form action="/delete/{{ item.id }}" method="POST">
-            <div style="float: right;">
-              <button class="btn btn-outline-danger btn-sm" type ="submit" id="delete">Delete Item</button>
-            </div>
-          </form>
-          <form action="/done_item/{{ item.id }}" method="POST">
-            <div style="float: right;">
-              <button class="btn btn-outline-success btn-sm" type ="submit" id="complete_item">Done</button>
-            </div> 
-          </form>
-        </li>
-      {% endfor %}
-    <h2>Done</h2>
-      {% for item in view_model.show_all_done %}
-        <li class="list-group-item list-group-item-dark">
-          {{ item.title }} - {{ item.last_modified }}
-          <form action="/delete/{{ item.id }}" method="POST">
-            <div style="float: right;">
-              <button class="btn btn-outline-danger btn-sm" type ="submit" id="delete">Delete Item</button>
-            </div>
-          </form>
-        </li>
-      {% endfor %}
-      <details>
-        <summary>Older Done Items</summary>
-        {% for item in view_model.older_done_items %}
-        <p>
-          <li class="list-group-item list-group-item-dark">
-            {{ item.title }} - {{ item.last_modified }}
-            <form action="/delete/{{ item.id }}" method="POST">
-              <div style="float: right;">
-                <button class="btn btn-outline-danger btn-sm" type="submit" id="delete">Delete Item</button>
-              </div>
-            </form>
-          </li>
-        {% endfor %}
-        </p>
-      </details>
     </ul>
+    <h2>Doing</h2>
+    <ul class="list-group mb-4">
+      {% for item in view_model.doing_items %}
+      <li class="list-group-item list-group-item-dark">
+        {{ item.title }} - {{ item.last_modified }}
+        <form action="/delete/{{ item.id }}" method="POST">
+          <div style="float: right;">
+            <button class="btn btn-outline-danger btn-sm" type="submit" id="delete">Delete Item</button>
+          </div>
+        </form>
+        <form action="/done_item/{{ item.id }}" method="POST">
+          <div style="float: right;">
+            <button class="btn btn-outline-success btn-sm" type="submit" id="make_done_item">Done</button>
+          </div>
+        </form>
+      </li>
+      {% endfor %}
+    </ul>
+    <h2>Done</h2>
+    <ul class="list-group mb-4">
+      {% for item in view_model.show_all_done %}
+      <li class="list-group-item list-group-item-dark">
+        {{ item.title }} - {{ item.last_modified }}
+        <form action="/delete/{{ item.id }}" method="POST">
+          <div style="float: right;">
+            <button class="btn btn-outline-danger btn-sm" type="submit" id="delete">Delete Item</button>
+          </div>
+        </form>
+      </li>
+      {% endfor %}
+    </ul>
+    <details>
+      <summary>Older Done Items</summary>
+      {% for item in view_model.older_done_items %}
+      <p>
+        <li class="list-group-item list-group-item-dark mb-4">
+          {{ item.title }} - {{ item.last_modified }}
+          <form action="/delete/{{ item.id }}" method="POST">
+            <div style="float: right;">
+              <button class="btn btn-outline-danger btn-sm" type="submit" id="delete">Delete Item</button>
+            </div>
+          </form>
+        </li>
+        {% endfor %}
+      </p>
+    </details>
   </div>
   <form action="/add" method="POST">
     <div class="input-group mb-3">
       <div class="input-group-prepend">
-        <button class="btn btn-outline-secondary" type="submit" id="title">Add Item</button>
+        <button class="btn btn-outline-secondary" type="submit" id="create_new_item">Add Item</button>
       </div>
-      <input type="text" id="title" name="title" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
+      <input type="text" id="new_item_input" name="title" class="form-control" placeholder=""
+        aria-label="Example text with button addon" aria-describedby="button-addon1">
     </div>
   </form>
 </div>

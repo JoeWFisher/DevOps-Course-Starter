@@ -5,6 +5,8 @@ import requests
 import trello
 import json
 import Item
+import os
+import datetime
 
 @pytest.fixture
 def client():
@@ -24,12 +26,12 @@ def mock_get_request(monkeypatch):
 
     class MockResponse(object):
         def __init__(self):
-            self.status_code = 400
+            self.status_code = 200
             self.url = 'http://test'
             self.headers = {'blaa': '1234'}
         
         def json(self):
-            return [{"id": "1", "dateLastActivity": "2020-06-28T12:54:22.469Z", "idList": "123", "name": "Test Return"}]
+            return [{"id": "1", "dateLastActivity": str(datetime.date.today()), "idList": os.environ['ToDoId'], "name": "Test Return"}]
 
     def mock_response(*args, **kwargs):
         return MockResponse()
@@ -39,6 +41,6 @@ def mock_get_request(monkeypatch):
 def test_index_page(mock_get_request, client): 
     response = client.get('/')
 
-    assert b'Done' in response.data
+    assert 'Test Return' in response.data.decode()
 
 

@@ -4,7 +4,7 @@ import view_model as view_model
 
 def create_app():
     app = Flask(__name__)
-    app.config.from_object('config')
+    app.config.from_object('env')
 
     app = Flask(__name__)
 

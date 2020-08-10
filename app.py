@@ -6,8 +6,6 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object('env')
 
-    app = Flask(__name__)
-
     @app.route('/', methods=['Get'])
     def index():
         items = trello.fetch_all_items()

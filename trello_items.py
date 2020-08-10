@@ -1,8 +1,6 @@
 from task_item import Item
 import requests
 import trello_config as config
-from dateutil.parser import parse
-import datetime
 import json
 
 def get_auth_params():

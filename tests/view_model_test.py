@@ -5,8 +5,7 @@ from dotenv import find_dotenv, load_dotenv
 import app
 import datetime
 from dateutil.parser import parse
-
-# TODO work out how to mock the today() method to always equal 04/08/2020
+from unittest import mock
 
 @pytest.fixture
 def test_items():
@@ -71,35 +70,37 @@ class TestFilters:
         assert any(x.id == '16' for x in filtered_items)
 
     @staticmethod
-    def test_recent_done_items(test_items):
-        # Arrange
-        
-        # Act
-        view = view_model.ViewModel(test_items)
-        filtered_items = view.recent_done_items
-        # Assert
-        assert any(x.id == '9' for x in filtered_items)
-        assert any(x.id == '10' for x in filtered_items)
-        assert any(x.id == '11' for x in filtered_items)
-        assert any(x.id == '12' for x in filtered_items)
-        assert not any(x.id == '13' for x in filtered_items)
-        assert not any(x.id == '14' for x in filtered_items)
-        assert not any(x.id == '15' for x in filtered_items)
-        assert not any(x.id == '16' for x in filtered_items)
+    def test_recent_done_items(test_items, monkeypatch):
+        target = datetime.date(2020, 8, 7)
+        with mock.patch.object(datetime, 'date', mock.Mock(wraps=datetime.date)) as patched:
+            patched.today.return_value = target
+            # Act
+            view = view_model.ViewModel(test_items)
+            filtered_items = view.recent_done_items
+            # Assert
+            assert any(x.id == '9' for x in filtered_items)
+            assert any(x.id == '10' for x in filtered_items)
+            assert any(x.id == '11' for x in filtered_items)
+            assert any(x.id == '12' for x in filtered_items)
+            assert not any(x.id == '13' for x in filtered_items)
+            assert not any(x.id == '14' for x in filtered_items)
+            assert not any(x.id == '15' for x in filtered_items)
+            assert not any(x.id == '16' for x in filtered_items)
 
     @staticmethod
     def test_older_done_items(test_items):
-        # Arrange
-        
-        # Act
-        view = view_model.ViewModel(test_items)
-        filtered_items = view.older_done_items
-        # Assert
-        assert not any(x.id == '9' for x in filtered_items)
-        assert not any(x.id == '10' for x in filtered_items)
-        assert not any(x.id == '11' for x in filtered_items)
-        assert not any(x.id == '12' for x in filtered_items)
-        assert any(x.id == '13' for x in filtered_items)
-        assert any(x.id == '14' for x in filtered_items)
-        assert any(x.id == '15' for x in filtered_items)
-        assert any(x.id == '16' for x in filtered_items)
+        target = datetime.date(2020, 8, 7)
+        with mock.patch.object(datetime, 'date', mock.Mock(wraps=datetime.date)) as patched:
+            patched.today.return_value = target
+            # Act
+            view = view_model.ViewModel(test_items)
+            filtered_items = view.older_done_items
+            # Assert
+            assert not any(x.id == '9' for x in filtered_items)
+            assert not any(x.id == '10' for x in filtered_items)
+            assert not any(x.id == '11' for x in filtered_items)
+            assert not any(x.id == '12' for x in filtered_items)
+            assert any(x.id == '13' for x in filtered_items)
+            assert any(x.id == '14' for x in filtered_items)
+            assert any(x.id == '15' for x in filtered_items)
+            assert any(x.id == '16' for x in filtered_items)

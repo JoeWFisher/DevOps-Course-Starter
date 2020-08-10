@@ -3,11 +3,14 @@ import trello as trello
 
 app = Flask(__name__)
 
-@app.route('/', methods=['Get'])
-def index():
-    todos = trello.fetch_all_items()
-    todos.sort(key=lambda k: k.status, reverse=True)
-    return render_template('index.html', todos = todos)
+    app = Flask(__name__)
+
+    @app.route('/', methods=['Get'])
+    def index():
+        items = trello.fetch_all_items()
+        items.sort(key=lambda k: k.status, reverse=True)
+        item_view_model = view_model.ViewModel(items)
+        return render_template('index.html', view_model=item_view_model) 
 
 @app.route('/add', methods=['Post'])
 def add_todo():

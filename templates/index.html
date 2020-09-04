@@ -11,12 +11,11 @@
     <div class="col-md-12">
       <h2>Items</h2>
       <ul class="list-group mb-4">
-        {% for todolist in list %}
+        {% for item in items %}
             <li>
-                {{todolist.status}} - 
-                {{todolist.title}} -
-              <a href="/complete/{{ todolist.id }}">Mark Complete</a> -
-              <a href="/delete/{{ todolist.id }}">Delete</a>
+                {{item.title}} - 
+              <a href="/complete/{{ item.id }}">Mark Complete</a> -
+              <a href="/delete/{{ item.id }}">Delete</a>
               </li> 
         {% endfor %}
       </ul>

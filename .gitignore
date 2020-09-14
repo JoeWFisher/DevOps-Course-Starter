@@ -117,3 +117,4 @@ env/
 .vscode/settings.json
 config.py
 geckodriver.log
+.vagrant/

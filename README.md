@@ -13,8 +13,6 @@ $ source setup.sh
 $ source setup.sh --windows
 ```
 
-config.py is required to run and contains the Trello API tokens and Boar ID's
-
 Once the setup script has completed and all packages have been installed, start the Flask app by running:
 ```bash
 $ flask run

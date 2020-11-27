@@ -4,24 +4,32 @@
 
 The project uses poetry to manage package dependencies.
 This can be setup using:
+``` bash
      $ run poetry install
+```
 
 This project uses flask env variables for the Trello API
 These need to be added to a .env file and include:
+```
     * Key
     * TOKEN
     * BoardID
     * ToDoId (List Id)
     * DoingId (List Id)
     * DoneId (List Id)
+```
 
 This project also uses Docker
 Docker production and development containers can be built using:
+``` bash
     $ docker build --target development --tag todo-app:dev .
     $ docker build --target production --tag todo-app:prod .
+```
 Once built they can be run using:
+``` bash
     $ docker run --env-file .env -p 5000:5000 todo-app:dev
     $ docker run --env-file .env -p 5000:5000 todo-app:prod
+```
 
 You should see output similar to the following depending on if you are running prod or dev:
 

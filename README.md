@@ -5,7 +5,7 @@
 The project uses poetry to manage package dependencies.
 This can be setup using:
 ``` bash
-     $ run poetry install
+     $ poetry install
 ```
 
 This project uses flask env variables for the Trello API

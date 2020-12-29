@@ -1,4 +1,4 @@
-from config import KEY, TOKEN, BoardID
+#from config import KEY, TOKEN, BoardID
 import requests
 import datetime
 

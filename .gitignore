@@ -118,3 +118,4 @@ env/
 config.py
 geckodriver.log
 .vagrant/
+env_file

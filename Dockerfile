@@ -23,6 +23,7 @@ ENTRYPOINT ["poetry", "run", "flask", "run", "-h", "0.0.0.0", "-p", "5000"]
 
 FROM base as test
 RUN poetry install
+
 # Install Chrome 
 RUN apt-get update
 RUN curl -sSL https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -o chrome.deb &&\

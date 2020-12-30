@@ -33,7 +33,7 @@ Once built they can be run using:
 
 You should see output similar to the following depending on if you are running prod or dev:
 
-prod:
+dev:
 ```bash
  * Serving Flask app "app" (lazy loading)
  * Environment: development
@@ -43,7 +43,7 @@ prod:
  * Debugger is active!
  * Debugger PIN: 226-556-590
 ```
-dev:
+prod:
 ```bash
  * Starting gunicorn 20.0.4
  * Listening at: http://0.0.0.0:5000 (1)

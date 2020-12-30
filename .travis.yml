@@ -1,5 +1,5 @@
 script:
 - docker build --target test --tag my-test-image .
-- docker run --env-file .env.test my-test-image test_client.py
-- docker run --env-file .env.test my-test-image test_items.py
-- docker run --env-file .env.test my-test-image test_system.py
+- docker run --env-file env_test my-test-image test_client.py
+- docker run --env-file env_test my-test-image test_items.py
+- docker run --env-file env_file my-test-image test_system.py

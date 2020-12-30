@@ -5,7 +5,7 @@ import dotenv
 
 def create_app():
     app = Flask(__name__)
-    app.config.from_object(dotenv.load_dotenv(dotenv.find_dotenv()))
+    app.config.from_object(dotenv.load_dotenv(dotenv.find_dotenv('.env')))
 
     @app.route('/', methods=['Get'])
     def index():

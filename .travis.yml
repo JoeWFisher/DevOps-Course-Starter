@@ -10,4 +10,4 @@ script:
 - docker build --target test --tag my-test-image .
 - docker run --env-file env_test my-test-image test_client.py
 - docker run --env-file env_test my-test-image test_items.py
-- docker run -e Key=$Key TOKEN=$TOKEN BoardID=$BoardID ToDoId=$ToDoId DoingId=$DoingId DoneId=$DoneId my-test-image test_system.py
+- docker run -e Key=$Key -e TOKEN=$TOKEN -e BoardID=$BoardID -e ToDoId=$ToDoId -e DoingId=$DoingId -e DoneId=$DoneId my-test-image test_system.py

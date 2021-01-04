@@ -12,23 +12,19 @@
     <h2>To Do</h2>
     <ul class="list-group mb-4">
       {% for item in view_model.todo_items %}
-      <li class="list-group-item">
-        {{ item.title }} - {{ item.last_modified }}
-        <form action="/delete/{{ item.id }}" method="POST">
-          <div style="float: right;">
-            <button class="btn btn-outline-danger btn-sm" type="submit" id="delete">Delete Item</button>
-          </div>
-        </form>
-        <form action="/doing_item/{{ item.id }}" method="POST">
-          <div style="float: right;">
-            <button class="btn btn-outline-success btn-sm" type="submit" id="make_doing_item">Doing</button>
-          </div>
-        </form>
-        <form action="/done_item/{{ item.id }}" method="POST">
-          <div style="float: right;">
+      <li class="list-group-item" style="text-align: left">
+        {{ item.title }} - {{ item.last_modified.strftime("%d-%m-%Y") }}
+        <div style="text-align: right">
+          <form action="/done_item/{{ item.id }}" method="POST" style="display:inline-block">
             <button class="btn btn-outline-success btn-sm" type="submit" id="make_done_item">Done</button>
-          </div>
-        </form>
+          </form>
+          <form action="/doing_item/{{ item.id }}" method="POST" style="display:inline-block">
+            <button class="btn btn-outline-success btn-sm" type="submit" id="make_doing_item">Doing</button>
+          </form>
+          <form action="/delete/{{ item.id }}" method="POST" style="display:inline-block">
+            <button class="btn btn-outline-danger btn-sm" type="submit" id="delete">Delete Item</button>
+          </form>
+        </div>
       </li>
       {% endfor %}
     </ul>
@@ -36,16 +32,15 @@
     <ul class="list-group mb-4">
       {% for item in view_model.doing_items %}
       <li class="list-group-item list-group-item-dark">
-        {{ item.title }} - {{ item.last_modified }}
-        <form action="/delete/{{ item.id }}" method="POST">
-          <div style="float: right;">
-            <button class="btn btn-outline-danger btn-sm" type="submit" id="delete">Delete Item</button>
-          </div>
-        </form>
-        <form action="/done_item/{{ item.id }}" method="POST">
-          <div style="float: right;">
+        {{ item.title }} - {{ item.last_modified.strftime("%d-%m-%Y") }}
+        <div style="text-align: right">
+          <form action="/done_item/{{ item.id }}" method="POST" style="display:inline-block">
             <button class="btn btn-outline-success btn-sm" type="submit" id="make_done_item">Done</button>
-          </div>
+          </form>
+          <form action="/delete/{{ item.id }}" method="POST" style="display:inline-block">
+            <button class="btn btn-outline-danger btn-sm" type="submit" id="delete">Delete Item</button>
+          </form>
+        </div>
         </form>
       </li>
       {% endfor %}
@@ -54,31 +49,35 @@
     <ul class="list-group mb-4">
       {% for item in view_model.show_all_done %}
       <li class="list-group-item list-group-item-dark">
-        {{ item.title }} - {{ item.last_modified }}
-        <form action="/delete/{{ item.id }}" method="POST">
-          <div style="float: right;">
+        {{ item.title }} - {{ item.last_modified.strftime("%d-%m-%Y") }}
+        <div style="text-align: right">
+          <form action="/delete/{{ item.id }}" method="POST" style="display:inline-block">
             <button class="btn btn-outline-danger btn-sm" type="submit" id="delete">Delete Item</button>
-          </div>
-        </form>
+          </form>
+        </div>
       </li>
       {% endfor %}
-    </ul>
     <details>
       <summary>Older Done Items</summary>
       {% for item in view_model.older_done_items %}
       <p>
         <li class="list-group-item list-group-item-dark mb-4">
-          {{ item.title }} - {{ item.last_modified }}
-          <form action="/delete/{{ item.id }}" method="POST">
-            <div style="float: right;">
+          {{ item.title }} - {{ item.last_modified.strftime("%d-%m-%Y") }}
+          <div style="text-align: right">
+            <form action="/delete/{{ item.id }}" method="POST" style="display:inline-block">
               <button class="btn btn-outline-danger btn-sm" type="submit" id="delete">Delete Item</button>
-            </div>
-          </form>
+            </form>
+          </div>
         </li>
         {% endfor %}
       </p>
     </details>
+    </ul>
   </div>
+</div>
+
+<div>
+  <h2>Add Item:</h2>
   <form action="/add" method="POST">
     <div class="input-group mb-3">
       <div class="input-group-prepend">

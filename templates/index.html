@@ -15,11 +15,11 @@
       <li class="list-group-item" style="text-align: left">
         {{ item.title }} - {{ item.last_modified.strftime("%d-%m-%Y") }}
         <div style="text-align: right">
+          <form action="/doing_item/{{ item.id }}" method="POST" style="display:inline-block">
+            <button class="btn btn-outline-secondary btn-sm" type="submit" id="make_doing_item">Doing</button>
+          </form>
           <form action="/done_item/{{ item.id }}" method="POST" style="display:inline-block">
             <button class="btn btn-outline-success btn-sm" type="submit" id="make_done_item">Done</button>
-          </form>
-          <form action="/doing_item/{{ item.id }}" method="POST" style="display:inline-block">
-            <button class="btn btn-outline-success btn-sm" type="submit" id="make_doing_item">Doing</button>
           </form>
           <form action="/delete/{{ item.id }}" method="POST" style="display:inline-block">
             <button class="btn btn-outline-danger btn-sm" type="submit" id="delete">Delete Item</button>
@@ -31,7 +31,7 @@
     <h2>Doing</h2>
     <ul class="list-group mb-4">
       {% for item in view_model.doing_items %}
-      <li class="list-group-item list-group-item-dark">
+      <li class="list-group-item list-group-item-secondary">
         {{ item.title }} - {{ item.last_modified.strftime("%d-%m-%Y") }}
         <div style="text-align: right">
           <form action="/done_item/{{ item.id }}" method="POST" style="display:inline-block">
@@ -48,7 +48,7 @@
     <h2>Done</h2>
     <ul class="list-group mb-4">
       {% for item in view_model.show_all_done %}
-      <li class="list-group-item list-group-item-dark">
+      <li class="list-group-item list-group-item-success">
         {{ item.title }} - {{ item.last_modified.strftime("%d-%m-%Y") }}
         <div style="text-align: right">
           <form action="/delete/{{ item.id }}" method="POST" style="display:inline-block">
@@ -61,7 +61,7 @@
       <summary>Older Done Items</summary>
       {% for item in view_model.older_done_items %}
       <p>
-        <li class="list-group-item list-group-item-dark mb-4">
+        <li class="list-group-item list-group-item-success mb-4">
           {{ item.title }} - {{ item.last_modified.strftime("%d-%m-%Y") }}
           <div style="text-align: right">
             <form action="/delete/{{ item.id }}" method="POST" style="display:inline-block">

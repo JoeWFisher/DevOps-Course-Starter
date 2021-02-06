@@ -18,14 +18,14 @@ jobs:
       stage: test
       script:
         #Docker login
-      - echo $DockerPassword | docker login --username joefish29 --password-stdin
+        - echo $DockerPassword | docker login --username joefish29 --password-stdin
 
-      #Test
-      - docker build --target test --tag my-test-image .
-      - docker run --env-file env_test my-test-image test_client.py
-      - docker run --env-file env_test my-test-image test_items.py
-      - docker run -e Key=$Key -e TOKEN=$TOKEN -e BoardID=$BoardID -e ToDoId=$ToDoId -e
-        DoingId=$DoingId -e DoneId=$DoneId my-test-image test_system.py
+        #Test
+        - docker build --target test --tag my-test-image .
+        - docker run --env-file env_test my-test-image test_client.py
+        - docker run --env-file env_test my-test-image test_items.py
+        - docker run -e Key=$Key -e TOKEN=$TOKEN -e BoardID=$BoardID -e ToDoId=$ToDoId -e
+          DoingId=$DoingId -e DoneId=$DoneId my-test-image test_system.py
 
       stage: deploy
       script:

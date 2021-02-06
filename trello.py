@@ -10,32 +10,39 @@ def fetch_all_items():
 
     client = pymongo.MongoClient("mongodb+srv://devops-user:Test123@cluster0.ciffq.mongodb.net/todo_db?retryWrites=true&w=majority")
     db = client.todo_db
-    ToDoCollection = db['ToDoCollection']
+    ToDoCollection = db.ToDoCollection
+    DoingCollection = db.DoingCollection
+    DoneCollection = db.DoneCollection
     for ToDo in ToDoCollection.find():
-        ToDo['']
+        item_list.append(it.Item(id=ToDo['_id'], status=ToDo['status'], title=ToDo['name'], last_modified=str(ToDo['last_modified'])))
+    for ToDo in DoingCollection.find():
+        item_list.append(it.Item(id=ToDo['_id'], status=ToDo['status'], title=ToDo['name'], last_modified=str(ToDo['last_modified'])))
+    for ToDo in DoneCollection.find():
+        item_list.append(it.Item(id=ToDo['_id'], status=ToDo['status'], title=ToDo['name'], last_modified=str(ToDo['last_modified'])))
+    return item_list
 
-    params = (
-        ('key', os.environ['Key']),
-        ('token', os.environ['TOKEN']),
-        ('fields', 'name,idList,dateLastActivity')
-    )
+    # params = (
+    #     ('key', os.environ['Key']),
+    #     ('token', os.environ['TOKEN']),
+    #     ('fields', 'name,idList,dateLastActivity')
+    # )
 
-    r = requests.get('https://api.trello.com/1/boards/' + os.environ['BoardID'] + '/cards', params=params)
-    data = r.json()
-    item_list = []
-    for card in data:
-        if card['idList'] == os.environ['ToDoId']:
-            card['idList'] = 'To Do'
-        elif card['idList'] == os.environ['DoingId']:
-            card['idList'] = 'Doing'
-        elif card['idList'] == os.environ['DoneId']:
-            card['idList'] = 'Done'
+    # r = requests.get('https://api.trello.com/1/boards/' + os.environ['BoardID'] + '/cards', params=params)
+    # data = r.json()
+    # item_list = []
+    # for card in data:
+    #     if card['idList'] == os.environ['ToDoId']:
+    #         card['idList'] = 'To Do'
+    #     elif card['idList'] == os.environ['DoingId']:
+    #         card['idList'] = 'Doing'
+    #     elif card['idList'] == os.environ['DoneId']:
+    #         card['idList'] = 'Done'
         
-        if [item for item in item_list if item.id == card['id']]:
-            pass
-        else:
-            item_list.append(it.Item(id=card['id'], status=card['idList'], title=card['name'], last_modified=card['dateLastActivity']))
-    return item_list   
+    #     if [item for item in item_list if item.id == card['id']]:
+    #         pass
+    #     else:
+    #         item_list.append(it.Item(id=card['id'], status=card['idList'], title=card['name'], last_modified=card['dateLastActivity']))
+    # return item_list   
 
 def create_new_item(name):
     client = pymongo.MongoClient("mongodb+srv://devops-user:Test123@cluster0.ciffq.mongodb.net/todo_db?retryWrites=true&w=majority")

@@ -8,6 +8,6 @@ env:
   - secure: TU4u7+YirlTCDAR5nBj0g6oRM1n+/j6kIS+9OwhEbwxZsnWJJi7cEWIQ3RdTczYC/eY2GwzYXOIUC8jDCX3NvkIEA00ev0lFZXqDX8qkqGD+ey1mqERTXs4LKpu2QP5ysxXWob3/+Jyw7l58l/Gxj6HFtikrgyGcORTjWr25cw9Es9y7F2+nyZDT5gA41OKOiTVb6WJYpVFKsHrflJRhqgXHqxtunygALo3nZn+p/RIx4wdofSC6H9KF8q8HQ4bFnqh3eUz2TtKNu8PxF3kJkG3vdTorIkN6nFjxj9HWNa1oMRqhrbYEDMiBPtcmHwm2KbEwo/DA5APx7SeHRBgUp6ZqCHq4EBCJP8JDsRt3EROXk4EQAVnRhVjLhZVJA8fgiJrDTPAGGpEeVFf1wsSveog+3myw1376JqYOC+u7gIiLI/fQP/0J5JMe4Dermk9J4aBEqnHTzvQPJq2m/OxijIDY7iIN9fOsvAawEBpGYPd0L9nO3iNymd6S6PJdmGqS+2yZ+c2EX2tZUOvkTz2x+t7jYsdB0pAGJhGF1/d7D5gdFc6W/1/ZghK6fKtDBKV+cPv5NCBxVpPD8X2E/qb4dUuaLpDqTWC8trw39hT5V9ezJU4YObTvz4Bnly2k0598O0IE63kuxT9ZI3W/JlZF2yOELArbh25sxQOnS3Taan4=
 script:
 - docker build --target test --tag my-test-image .
-- docker run --env-file env_test my-test-image test_client.py
-- docker run --env-file env_test my-test-image test_items.py
+- docker run  my-test-image test_client.py
+- docker run  my-test-image test_items.py
 - docker run -e Key=$Key -e TOKEN=$TOKEN -e BoardID=$BoardID -e ToDoId=$ToDoId -e DoingId=$DoingId -e DoneId=$DoneId my-test-image test_system.py

@@ -52,7 +52,7 @@ def test_app():
 
 @pytest.fixture(scope="module")
 def driver():  
-    opts = webdriver.ChromeOptions() 
+    opts = webdriver.ChromeOptions('./chromedriver') 
     opts.add_argument('--headless')   
     opts.add_argument('--no-sandbox') 
     opts.add_argument('--disable-dev-shm-usage')   

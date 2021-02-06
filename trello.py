@@ -2,8 +2,18 @@ import Item as it
 import requests 
 import json
 import os
+import pymongo
+import datetime
 
 def fetch_all_items():
+    item_list = []
+
+    client = pymongo.MongoClient("mongodb+srv://devops-user:Test123@cluster0.ciffq.mongodb.net/todo_db?retryWrites=true&w=majority")
+    db = client.todo_db
+    ToDoCollection = db['ToDoCollection']
+    for ToDo in ToDoCollection.find():
+        ToDo['']
+
     params = (
         ('key', os.environ['Key']),
         ('token', os.environ['TOKEN']),
@@ -28,14 +38,11 @@ def fetch_all_items():
     return item_list   
 
 def create_new_item(name):
-    params = (
-        ('key', os.environ['Key']),
-        ('token', os.environ['TOKEN']),
-        ('name', name),
-        ('idList', os.environ['ToDoId'])
-    )
-
-    requests.post('https://api.trello.com/1/cards', params=params)
+    client = pymongo.MongoClient("mongodb+srv://devops-user:Test123@cluster0.ciffq.mongodb.net/todo_db?retryWrites=true&w=majority")
+    db = client.todo_db
+    todo = db.ToDoCollection
+    item = {"name": name, "status": "To Do", "last_modified": datetime.datetime.now()}
+    todo.insert_one(item).inserted_id
 
 def update_item_doing(id):
         params = (

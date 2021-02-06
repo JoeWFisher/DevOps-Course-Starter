@@ -12,14 +12,9 @@ def fetch_all_items():
     client = pymongo.MongoClient("mongodb+srv://devops-user:Test123@cluster0.ciffq.mongodb.net/todo_db?retryWrites=true&w=majority")
     db = client.todo_db
     ToDoCollection = db.ToDoCollection
-    DoingCollection = db.DoingCollection
-    DoneCollection = db.DoneCollection
     for ToDo in ToDoCollection.find():
         item_list.append(it.Item(id=ToDo['_id'], status=ToDo['status'], title=ToDo['name'], last_modified=str(ToDo['last_modified'])))
-    for ToDo in DoingCollection.find():
-        item_list.append(it.Item(id=ToDo['_id'], status=ToDo['status'], title=ToDo['name'], last_modified=str(ToDo['last_modified'])))
-    for ToDo in DoneCollection.find():
-        item_list.append(it.Item(id=ToDo['_id'], status=ToDo['status'], title=ToDo['name'], last_modified=str(ToDo['last_modified'])))
+    
     return item_list
 
     # params = (
@@ -89,12 +84,20 @@ def update_item_done(id):
         # requests.put("https://api.trello.com/1/cards/" + id, params=params)
 
 def delete_item(id):
-    params = (
-        ('key', os.environ['Key']),
-        ('token', os.environ['TOKEN'])
-    )    
+    client = pymongo.MongoClient("mongodb+srv://devops-user:Test123@cluster0.ciffq.mongodb.net/todo_db?retryWrites=true&w=majority")
+    db = client.todo_db
+    col = db.ToDoCollection
 
-    requests.delete("https://api.trello.com/1/cards/" + id, params=params)
+    myquery = {"_id": ObjectId(id)}
+
+    col.delete_one(myquery)  
+
+    # params = (
+    #     ('key', os.environ['Key']),
+    #     ('token', os.environ['TOKEN'])
+    # )    
+
+    # requests.delete("https://api.trello.com/1/cards/" + id, params=params)
 
 def create_trello_board():
     params = (

@@ -8,24 +8,29 @@ env:
   - secure: TU4u7+YirlTCDAR5nBj0g6oRM1n+/j6kIS+9OwhEbwxZsnWJJi7cEWIQ3RdTczYC/eY2GwzYXOIUC8jDCX3NvkIEA00ev0lFZXqDX8qkqGD+ey1mqERTXs4LKpu2QP5ysxXWob3/+Jyw7l58l/Gxj6HFtikrgyGcORTjWr25cw9Es9y7F2+nyZDT5gA41OKOiTVb6WJYpVFKsHrflJRhqgXHqxtunygALo3nZn+p/RIx4wdofSC6H9KF8q8HQ4bFnqh3eUz2TtKNu8PxF3kJkG3vdTorIkN6nFjxj9HWNa1oMRqhrbYEDMiBPtcmHwm2KbEwo/DA5APx7SeHRBgUp6ZqCHq4EBCJP8JDsRt3EROXk4EQAVnRhVjLhZVJA8fgiJrDTPAGGpEeVFf1wsSveog+3myw1376JqYOC+u7gIiLI/fQP/0J5JMe4Dermk9J4aBEqnHTzvQPJq2m/OxijIDY7iIN9fOsvAawEBpGYPd0L9nO3iNymd6S6PJdmGqS+2yZ+c2EX2tZUOvkTz2x+t7jYsdB0pAGJhGF1/d7D5gdFc6W/1/ZghK6fKtDBKV+cPv5NCBxVpPD8X2E/qb4dUuaLpDqTWC8trw39hT5V9ezJU4YObTvz4Bnly2k0598O0IE63kuxT9ZI3W/JlZF2yOELArbh25sxQOnS3Taan4=
   - secure: lFak7oRDvrUpzXkYEEHzFnPQiJhqnKx01oINSQirg/4KXnENzHKe1laz9dxi1l/nR6GSLyKcjkvUNUEaF6DKY4/Sv0OnivWLba9L6BebRw3+SC3NfakZS9DbTZKFMFS4F7BM4nuOEeSDZxn7Uab5Gx7Z4O73IMOmxtBkdK+YUth3iZJ9VVXaJkdaPurPmoKRxlg+ehIirwX6TX/ewpq1soOPH+CZ3HMxd6RRpxj0hp12Vwevh6/uDFJH4c34RG6SIR1kGN/r/gcq4vrkdz35YjbdhU0K52JQc27D8P5yhhP/THDh/EZS6Kxk1ou10P0yfm3hWNpp2Z+aO4wuokLTbVcygLxA+nMRy6/GioOOKM6e0iINjnz/c/RlCgImQeaWgHuXTjib0/M5tG3OpltDA5eDRhpGcarS26fzq4Sb8j3cP5C5MFuhj4k+rE0EQlzQqjnLEo8Wzo1f4KnYFW4SIRrNbWHHyorRERIw5STMX0JB8Xkit84MF20w3NMRQs6qDF6AkJVY/OUFUgupeXXjQaALHcQG74u2F+4bq38uiC387kKMzbA/b5N51ZQkeJipPjo5tMpS+HXU54QEbJAKkmavQhuBgCqLSUlRRxGt2l6f+Ny9AT53/WIMB3V3y9nZlr8glhyItcKEVVBAWd7d252U+6ylymx30REkDpYCHeQ=
   - secure: D1mYdwt1Vz0CQbZJx/87AgmKIGV1qdaDPGABoSz5YchS8NrsFXkcty+WfytpiBfWqx/8mXaT0Y6MUcl888L6gRoGSVjRsWu7l5KhchiRTStW63frm1VkClvJIk5PTZvyH8S7XJNJ7TjqUhtlXk3BsMzFSqor456ssc7rpEI+WIdRmV4VwMuIXe35W/mJs3kXEJXTks2DkUSzjKYD8yOQA7mnsv2J/q0WaPDZGagAD7AMH89/Tveku970UvrbOIIBpzhA4TA04OW/d1pwotod/lZnTDp8N722yGaKeCO+ehw/IolMNLY/ivKWyZxfibP9TUaTOY1h0lwLj2VmixAvlSZdwmfFDO69mbB8tRQ3aNI6bX7gmWTnGcPh2aZ6cnHPrZ43C2jVAP0YOHZ7Rmc+U22wHyfgHsPmP36t2mJrN3AjB8vhcY10g9GuhRQ9AHX5A8Os5jET/7RoC0o03xBCXc+fTngkASyaSmavnIhZK3pUs66fH71GOE0IujtvhtvMJFOWn5mxEWUURfyZ+X/bRoG5+Q+sFgSH41humJEc+PDfj3AiyVtmYYve1QD1xeKW1UDAtCkhV0gZCeGrhloDRaWUDFh3svRSJdW6R8+QJf327NnLk2kBVLuKQTOUGgTeo+rLbk6EKc3kWBCxG8iYX6LBqDUIiQyxA9YwpjWYnAo=
-script:
-  #Docker login
-- echo $DockerPassword | docker login --username joefish29 --password-stdin
+stages:
+  names: test
+  script:
+    #Docker login
+  - echo $DockerPassword | docker login --username joefish29 --password-stdin
 
-#Test
-- docker build --target test --tag my-test-image .
-- docker run --env-file env_test my-test-image test_client.py
-- docker run --env-file env_test my-test-image test_items.py
-- docker run -e Key=$Key -e TOKEN=$TOKEN -e BoardID=$BoardID -e ToDoId=$ToDoId -e
-  DoingId=$DoingId -e DoneId=$DoneId my-test-image test_system.py
+  #Test
+  - docker build --target test --tag my-test-image .
+  - docker run --env-file env_test my-test-image test_client.py
+  - docker run --env-file env_test my-test-image test_items.py
+  - docker run -e Key=$Key -e TOKEN=$TOKEN -e BoardID=$BoardID -e ToDoId=$ToDoId -e
+    DoingId=$DoingId -e DoneId=$DoneId my-test-image test_system.py
 
-  #Heroku
-- echo $HEROKU_API_KEY | docker login --username=_ --password-stdin registry.heroku.com
-- docker pull joefish29/todo-app
-- docker tag joefish29/todo-app registry.heroku.com/todoapp-joefish/web
-- docker push registry.heroku.com/todoapp-joefish/web
-- heroku container:release web -a todoapp-joefish
+  name: deploy:
+  if: branch = master
+  script:
+      #Heroku
+    - echo $HEROKU_API_KEY | docker login --username=_ --password-stdin registry.heroku.com
+    - docker pull joefish29/todo-app
+    - docker tag joefish29/todo-app registry.heroku.com/todoapp-joefish/web
+    - docker push registry.heroku.com/todoapp-joefish/web
+    - heroku container:release web -a todoapp-joefish
 
-#DockerHub
-- docker build --target production --tag joefish29/todo-app:latest .
-- docker push joefish29/todo-app:latest
+    #DockerHub
+    - docker build --target production --tag joefish29/todo-app:latest .
+    - docker push joefish29/todo-app:latest

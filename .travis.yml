@@ -15,27 +15,27 @@ stages:
 
 jobs:
   include:
-    stage: test
-    script:
-      #Docker login
-    - echo $DockerPassword | docker login --username joefish29 --password-stdin
+      stage: test
+      script:
+        #Docker login
+      - echo $DockerPassword | docker login --username joefish29 --password-stdin
 
-    #Test
-    - docker build --target test --tag my-test-image .
-    - docker run --env-file env_test my-test-image test_client.py
-    - docker run --env-file env_test my-test-image test_items.py
-    - docker run -e Key=$Key -e TOKEN=$TOKEN -e BoardID=$BoardID -e ToDoId=$ToDoId -e
-      DoingId=$DoingId -e DoneId=$DoneId my-test-image test_system.py
+      #Test
+      - docker build --target test --tag my-test-image .
+      - docker run --env-file env_test my-test-image test_client.py
+      - docker run --env-file env_test my-test-image test_items.py
+      - docker run -e Key=$Key -e TOKEN=$TOKEN -e BoardID=$BoardID -e ToDoId=$ToDoId -e
+        DoingId=$DoingId -e DoneId=$DoneId my-test-image test_system.py
 
-    stage: deploy
-    script:
-        #Heroku
-      - echo $HEROKU_API_KEY | docker login --username=_ --password-stdin registry.heroku.com
-      - docker pull joefish29/todo-app
-      - docker tag joefish29/todo-app registry.heroku.com/todoapp-joefish/web
-      - docker push registry.heroku.com/todoapp-joefish/web
-      - heroku container:release web -a todoapp-joefish
+      stage: deploy
+      script:
+          #Heroku
+        - echo $HEROKU_API_KEY | docker login --username=_ --password-stdin registry.heroku.com
+        - docker pull joefish29/todo-app
+        - docker tag joefish29/todo-app registry.heroku.com/todoapp-joefish/web
+        - docker push registry.heroku.com/todoapp-joefish/web
+        - heroku container:release web -a todoapp-joefish
 
-      #DockerHub
-      - docker build --target production --tag joefish29/todo-app:latest .
-      - docker push joefish29/todo-app:latest
+        #DockerHub
+        - docker build --target production --tag joefish29/todo-app:latest .
+        - docker push joefish29/todo-app:latest

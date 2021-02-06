@@ -4,6 +4,7 @@ import json
 import os
 import pymongo
 import datetime
+from bson import ObjectId
 
 def fetch_all_items():
     item_list = []
@@ -52,22 +53,40 @@ def create_new_item(name):
     todo.insert_one(item).inserted_id
 
 def update_item_doing(id):
-        params = (
-            ('key', os.environ['Key']),
-            ('token', os.environ['TOKEN']),
-            ('idList', os.environ['DoingId'])
-        )    
+    client = pymongo.MongoClient("mongodb+srv://devops-user:Test123@cluster0.ciffq.mongodb.net/todo_db?retryWrites=true&w=majority")
+    db = client.todo_db
+    col = db.ToDoCollection
 
-        requests.put("https://api.trello.com/1/cards/" + id, params=params)
+    myquery = {"_id": ObjectId(id)}
+    newvalues = {"$set": { "status": "Doing"}}
+
+    col.update_one(myquery, newvalues)
+
+        # params = (
+        #     ('key', os.environ['Key']),
+        #     ('token', os.environ['TOKEN']),
+        #     ('idList', os.environ['DoingId'])
+        # )    
+
+        # requests.put("https://api.trello.com/1/cards/" + id, params=params)
     
-def update_item_done(id):    
-        params = (
-            ('key', os.environ['Key']),
-            ('token', os.environ['TOKEN']),
-            ('idList', os.environ['DoneId'])
-        )    
+def update_item_done(id): 
+    client = pymongo.MongoClient("mongodb+srv://devops-user:Test123@cluster0.ciffq.mongodb.net/todo_db?retryWrites=true&w=majority")
+    db = client.todo_db
+    col = db.ToDoCollection
 
-        requests.put("https://api.trello.com/1/cards/" + id, params=params)
+    myquery = {"_id": ObjectId(id)}
+    newvalues = {"$set": { "status": "Done"}}
+
+    col.update_one(myquery, newvalues)   
+
+        # params = (
+        #     ('key', os.environ['Key']),
+        #     ('token', os.environ['TOKEN']),
+        #     ('idList', os.environ['DoneId'])
+        # )    
+
+        # requests.put("https://api.trello.com/1/cards/" + id, params=params)
 
 def delete_item(id):
     params = (

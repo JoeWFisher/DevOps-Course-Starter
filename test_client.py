@@ -7,6 +7,8 @@ import json
 import Item
 import os
 import datetime
+import mongomock
+import pymongo
 
 @pytest.fixture
 def client():
@@ -21,26 +23,15 @@ def client():
     with test_app.test_client() as client: 
         yield client 
 
-@pytest.fixture
-def mock_get_request(monkeypatch):
-
-    class MockResponse(object):
-        def __init__(self):
-            self.status_code = 200
-            self.url = 'http://test'
-            self.headers = {'blaa': '1234'}
-        
-        def json(self):
-            return [{"id": "1", "dateLastActivity": str(datetime.date.today()), "idList": os.environ['ToDoId'], "name": "Test Return"}]
-
-    def mock_response(*args, **kwargs):
-        return MockResponse()
-
-    monkeypatch.setattr(requests, 'get', mock_response)
-    
-def test_index_page(mock_get_request, client): 
+@mongomock.patch(servers=(("mongo", 27017),))    
+def test_index_page(client): 
+    setup_database()
     response = client.get('/')
 
     assert 'Test Return' in response.data.decode()
 
 
+def setup_database():
+    client = pymongo.MongoClient(os.environ["Mongo_Url"])
+    db = client.get_default_database()
+    db.ToDoCollection.insert_one({"last_modified": str(datetime.date.today()), "status": "To Do", "name": "Test Return"})

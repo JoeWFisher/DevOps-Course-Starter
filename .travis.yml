@@ -22,18 +22,20 @@ jobs:
         - docker run --env-file env_test my-test-image test_items.py
         - docker run -e Key=$Key -e TOKEN=$TOKEN -e BoardID=$BoardID -e ToDoId=$ToDoId -e
           DoingId=$DoingId -e DoneId=$DoneId my-test-image test_system.py
-    - stage: deploy
-      deploy:
-        #Heroku
-        - echo $HEROKU_API_KEY | docker login --username=_ --password-stdin registry.heroku.com
-        - docker pull joefish29/todo-app
-        - docker tag joefish29/todo-app registry.heroku.com/todoapp-joefish/web
-        - docker push registry.heroku.com/todoapp-joefish/web
-        - heroku container:release web -a todoapp-joefish
+    
+    deploy:
+      provider: heroku
+      script:
+      #Heroku
+      - echo $HEROKU_API_KEY | docker login --username=_ --password-stdin registry.heroku.com
+      - docker pull joefish29/todo-app
+      - docker tag joefish29/todo-app registry.heroku.com/todoapp-joefish/web
+      - docker push registry.heroku.com/todoapp-joefish/web
+      - heroku container:release web -a todoapp-joefish
 
-        #DockerHub
-        - echo $DockerPassword | docker login --username joefish29 --password-stdin
-        - docker build --target production --tag joefish29/todo-app:latest .
-        - docker push joefish29/todo-app:latest
-      on:
-        branch: master
+      #DockerHub
+      - echo $DockerPassword | docker login --username joefish29 --password-stdin
+      - docker build --target production --tag joefish29/todo-app:latest .
+      - docker push joefish29/todo-app:latest
+    on:
+      branch: master

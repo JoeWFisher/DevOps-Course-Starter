@@ -22,10 +22,9 @@ jobs:
         - docker run --env-file env_test my-test-image test_items.py
         - docker run -e Key=$Key -e TOKEN=$TOKEN -e BoardID=$BoardID -e ToDoId=$ToDoId -e
           DoingId=$DoingId -e DoneId=$DoneId my-test-image test_system.py
-
-    deploy:
-      script:
-          #Heroku
+    - stage: deploy
+      deploy:
+        #Heroku
         - echo $HEROKU_API_KEY | docker login --username=_ --password-stdin registry.heroku.com
         - docker pull joefish29/todo-app
         - docker tag joefish29/todo-app registry.heroku.com/todoapp-joefish/web

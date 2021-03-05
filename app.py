@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 import trello as trello
 import view_model as view_model
 import dotenv
+from flask_login import login_required
 
 def create_app():
     app = Flask(__name__)
@@ -15,6 +16,7 @@ def create_app():
         return render_template('index.html', view_model=item_view_model) 
 
     @app.route('/add', methods=['Post'])
+    @login_required
     def add_todo():
         trello.create_new_item(request.form.get('title'))
         return redirect('/')

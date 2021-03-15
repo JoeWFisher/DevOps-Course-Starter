@@ -6,16 +6,14 @@ RUN pip install poetry
 WORKDIR /DevOps-Course-Starter
 COPY poetry.lock pyproject.toml /DevOps-Course-Starter/
 
-RUN poetry config virtualenvs.create false
+RUN poetry config virtualenvs.create false --local && poetry install
 
 COPY . /DevOps-Course-Starter/
-
-EXPOSE 5000
 
 FROM base as production
 ENV FLASK_ENV=production
 RUN poetry install --no-dev
-ENTRYPOINT ["gunicorn", "--config", "gunicorn.conf.py", "wsgi:app"]
+CMD gunicorn --bind 0.0.0.0:$PORT wsgi:app
 
 FROM base as development
 RUN poetry install

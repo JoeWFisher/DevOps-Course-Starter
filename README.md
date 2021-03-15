@@ -1,11 +1,28 @@
 # DevOps Apprenticeship: Project Exercise
 
+## Heroku
+
+This app is now hosted on Heroku:
+
+http://todoapp-joefish.herokuapp.com/
+
+## Travis CI
+
+This app is deloyed using Travis CI.
+Builds are run on pull requests.
+
+Tests are included in the build and are required to pass to deploy the app
 ## Getting started
 
 The project uses poetry to manage package dependencies.
 This can be setup using:
 ``` bash
      $ poetry install
+```
+
+This app can be run locally using:
+``` bash
+    $ poetry run flask run
 ```
 
 This project uses flask env variables for the Trello API

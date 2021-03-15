@@ -29,7 +29,6 @@ def test_app():
 
     # Tear Down     
     thread.join(1)  
-    delete_trello_board() 
 
 
 

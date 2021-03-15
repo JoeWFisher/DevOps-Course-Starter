@@ -23,8 +23,8 @@ jobs:
 
         #Test
         - docker build --target test --tag my-test-image .
-        - docker run --env-file env_test my-test-image test_client.py
-        - docker run --env-file env_test my-test-image test_items.py
+        - docker run --env-file .env.test my-test-image test_client.py
+        - docker run --env-file .env.test my-test-image test_items.py
         - docker run -e Key=$Key -e TOKEN=$TOKEN -e BoardID=$BoardID -e ToDoId=$ToDoId -e
           DoingId=$DoingId -e DoneId=$DoneId my-test-image test_system.py
 

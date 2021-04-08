@@ -41,7 +41,7 @@ Docker production and development containers can be built using, with a Port arg
 Once built they can be run using:
 ``` bash
     $ docker run --env-file .env -p 5000:5000 todo-app:dev
-    $ docker run --env-file .env -p 5000:5000 todo-app:prod
+    $ docker run --env-file .env -p 5000:5000 -e PORT=5000 todo-app:prod
 ```
 
 You should see output similar to the following depending on if you are running prod or dev:

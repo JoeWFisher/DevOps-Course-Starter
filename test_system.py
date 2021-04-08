@@ -1,13 +1,12 @@
 import os
 import pytest
 import app
-import mongo
+from trello import create_trello_board, delete_trello_board
 from threading import Thread
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import dotenv
 import requests
-import pymongo
  
 @pytest.fixture(scope='module')
 def test_app():
@@ -15,9 +14,27 @@ def test_app():
     file_path = dotenv.find_dotenv('.env') 
     dotenv.load_dotenv(file_path, override=True) 
 
-    test_db = "todo_test_db"
-    os.environ['Mongo_db'] = test_db
-    
+    # Create the new board & update the board id environment variable
+    board_id = create_trello_board() 
+    os.environ['BoardID'] = board_id 
+
+    # Get the new board list ids and update the environment variables
+    params = (
+        ('key', os.environ['Key']),
+        ('token', os.environ['TOKEN']),
+        ('fields', 'all')
+    )
+
+    r = requests.get('https://api.trello.com/1/boards/' + os.environ['BoardID'] + '/lists', params=params)
+
+    to_do_id = r.json()[0]['id']
+    doing_id = r.json()[1]['id']
+    done_id = r.json()[2]['id']
+
+    os.environ['ToDoId'] = to_do_id
+    os.environ['DoingId'] = doing_id
+    os.environ['DoneId'] = done_id
+
     # construct the new application   
     application = app.create_app()   
 
@@ -29,6 +46,7 @@ def test_app():
 
     # Tear Down     
     thread.join(1)  
+    delete_trello_board(board_id) 
 
 
 

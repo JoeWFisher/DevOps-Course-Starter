@@ -25,15 +25,19 @@ This app can be run locally using:
     $ poetry run flask run
 ```
 
-This project uses flask env variables 
+This project uses flask env variables for the Trello API
 These need to be added to a .env file and include:
 ```
-    * Mongo_Url
-    * Mongo_db
+    * Key
+    * TOKEN
+    * BoardID
+    * ToDoId (List Id)
+    * DoingId (List Id)
+    * DoneId (List Id)
 ```
 
 This project also uses Docker
-Docker production and development containers can be built using, with a Port argument passed in:
+Docker production and development containers can be built using:
 ``` bash
     $ docker build --target development --tag todo-app:dev .
     $ docker build --target production --tag todo-app:prod .
@@ -41,7 +45,7 @@ Docker production and development containers can be built using, with a Port arg
 Once built they can be run using:
 ``` bash
     $ docker run --env-file .env -p 5000:5000 todo-app:dev
-    $ docker run --env-file .env -p 5000:5000 -e PORT=5000 todo-app:prod
+    $ docker run --env-file .env -p 5000:5000 todo-app:prod
 ```
 
 You should see output similar to the following depending on if you are running prod or dev:

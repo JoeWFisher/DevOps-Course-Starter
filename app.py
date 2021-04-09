@@ -2,16 +2,18 @@ from flask import Flask, render_template, request, redirect, url_for
 import trello as trello
 import view_model as view_model
 import dotenv
-from flask_login import login_required
+from flask_login import login_required, login_user
 import login_manager as login_manager
 from oauthlib.oauth2 import WebApplicationClient
 import os
 import requests
 import json
+from user import User
+from flask_config import Config
 
 def create_app():
     app = Flask(__name__)
-    app.config.from_object(dotenv.load_dotenv(dotenv.find_dotenv('.env')))
+    app.config.from_object(Config())
     login_manager.login_manager.init_app(app)
 
     @app.route('/', methods=['Get'])
@@ -28,16 +30,19 @@ def create_app():
         return redirect('/')
 
     @app.route('/doing_item/<todo_id>', methods=['Post'])
+    @login_required
     def update_status_doing(todo_id):
         trello.update_item_doing(todo_id)
         return redirect('/')
 
     @app.route('/done_item/<todo_id>', methods=['Post'])
+    @login_required
     def update_status_done(todo_id):
         trello.update_item_done(todo_id)
         return redirect('/')
 
     @app.route('/delete/<todo_id>', methods=['Post'])
+    @login_required
     def remove_item(todo_id):
         trello.delete_item(todo_id)
         return redirect('/')
@@ -47,7 +52,12 @@ def create_app():
         callback_code = request.args.get("code")
         github_client =  WebApplicationClient(os.environ.get('clientId'))
         github_token = github_client.prepare_token_request("https://github.com/login/oauth/access_token", code=callback_code) 
-        github_user = github_client.add_token("https://api.github.com/user", Authorization=github_token)
+        github_access = requests.post(github_token[0], headers=github_token[1], data=github_token[2], auth=(os.environ.get('clientId'), os.environ.get('client-secret')))
+        github_json = github_client.parse_request_body_response(github_access.text)
+        github_user_request_param = github_client.add_token("https://api.github.com/user")
+        github_user = requests.get(github_user_request_param[0], headers=github_user_request_param[1]).json()
+
+        login_user(User(github_user['id']))
 
         return redirect('/') 
     if __name__ == '__main__':

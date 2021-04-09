@@ -24,45 +24,36 @@ def create_app():
         item_view_model = view_model.ViewModel(items)
         if current_user == 'writer':
             return render_template('index_writer.html', view_model=item_view_model)
-        else:
+        elif current_user == 'reader':
             return render_template('index_reader.html', view_model=item_view_model)
+        else:
+            return render_template('index_writer.html', view_model=item_view_model)
         
 
     @app.route('/add', methods=['Post'])
     @login_required
     def add_todo():
-        if current_user == 'writer':
-            mongo.create_new_item(request.form.get('title'))
-            return redirect('/')
-        else:
-            return redirect('/')
+        mongo.create_new_item(request.form.get('title'))
+        return redirect('/')
 
     @app.route('/doing_item/<todo_id>', methods=['Post'])
     @login_required
     def update_status_doing(todo_id):
-        if current_user == 'writer':
-            mongo.update_item_doing(todo_id)
-            return redirect('/')
-        else:
-            return redirect('/')
+        mongo.update_item_doing(todo_id)
+        return redirect('/')
+
 
     @app.route('/done_item/<todo_id>', methods=['Post'])
     @login_required
     def update_status_done(todo_id):
-        if current_user == 'writer':
-            mongo.update_item_done(todo_id)
-            return redirect('/')
-        else:
-            return redirect('/')
+        mongo.update_item_done(todo_id)
+        return redirect('/')
 
     @app.route('/delete/<todo_id>', methods=['Post'])
     @login_required
     def remove_item(todo_id):
-        if current_user == 'writer':
-            mongo.delete_item(todo_id)
-            return redirect('/')
-        else:
-            return redirect('/')
+        mongo.delete_item(todo_id)
+        return redirect('/')
 
     @app.route('/login/callback')
     def login_callback():

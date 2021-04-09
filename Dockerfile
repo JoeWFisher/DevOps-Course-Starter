@@ -10,8 +10,6 @@ RUN poetry config virtualenvs.create false --local && poetry install
 
 COPY . /DevOps-Course-Starter/
 
-#EXPOSE 5000
-
 FROM base as production
 ENV FLASK_ENV=production
 RUN poetry install --no-dev

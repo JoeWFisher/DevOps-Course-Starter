@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
-import trello as trello
+import mongo as mongo
 import view_model as view_model
 import dotenv
 from flask_login import login_required, login_user, current_user
@@ -19,7 +19,7 @@ def create_app():
     @app.route('/', methods=['Get'])
     @login_required
     def index():
-        items = trello.fetch_all_items()
+        items = mongo.fetch_all_items()
         items.sort(key=lambda k: k.status, reverse=True)
         item_view_model = view_model.ViewModel(items)
         if current_user == 'writer':

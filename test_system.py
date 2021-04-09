@@ -1,7 +1,7 @@
 import os
 import pytest
 import app
-from trello import create_trello_board, delete_trello_board
+import mongo
 from threading import Thread
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
@@ -29,7 +29,6 @@ def test_app():
 
     # Tear Down     
     thread.join(1)  
-    delete_trello_board() 
 
 
 

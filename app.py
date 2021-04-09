@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 import trello as trello
 import view_model as view_model
 import dotenv
-from flask_login import login_required, login_user
+from flask_login import login_required, login_user, current_user
 import login_manager as login_manager
 from oauthlib.oauth2 import WebApplicationClient
 import os
@@ -17,35 +17,51 @@ def create_app():
     login_manager.login_manager.init_app(app)
 
     @app.route('/', methods=['Get'])
+    @login_required
     def index():
         items = trello.fetch_all_items()
         items.sort(key=lambda k: k.status, reverse=True)
         item_view_model = view_model.ViewModel(items)
-        return render_template('index.html', view_model=item_view_model) 
+        if current_user == 'writer':
+            return render_template('index_writer.html', view_model=item_view_model)
+        else:
+            return render_template('index_reader.html', view_model=item_view_model)
 
     @app.route('/add', methods=['Post'])
     @login_required
     def add_todo():
-        trello.create_new_item(request.form.get('title'))
-        return redirect('/')
+        if current_user == 'writer':
+            trello.create_new_item(request.form.get('title'))
+            return redirect('/')
+        else:
+            return redirect('/')
 
     @app.route('/doing_item/<todo_id>', methods=['Post'])
     @login_required
     def update_status_doing(todo_id):
-        trello.update_item_doing(todo_id)
-        return redirect('/')
+        if current_user == 'writer':
+            trello.update_item_doing(todo_id)
+            return redirect('/')
+        else:
+            return redirect('/')
 
     @app.route('/done_item/<todo_id>', methods=['Post'])
     @login_required
     def update_status_done(todo_id):
-        trello.update_item_done(todo_id)
-        return redirect('/')
+        if current_user == 'writer':
+            trello.update_item_done(todo_id)
+            return redirect('/')
+        else:
+            return redirect('/')
 
     @app.route('/delete/<todo_id>', methods=['Post'])
     @login_required
     def remove_item(todo_id):
-        trello.delete_item(todo_id)
-        return redirect('/')
+        if current_user == 'writer':
+            trello.delete_item(todo_id)
+            return redirect('/')
+        else:
+            return redirect('/')
 
     @app.route('/login/callback')
     def login_callback():

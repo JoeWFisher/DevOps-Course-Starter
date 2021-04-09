@@ -15,6 +15,7 @@ def unauthenticated():
 
 @login_manager.user_loader
 def load_user(user_id):
+    
     if user_id == '47788504':
         return 'writer'
     else:

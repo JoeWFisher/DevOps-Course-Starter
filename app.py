@@ -22,16 +22,17 @@ def create_app():
         items = mongo.fetch_all_items()
         items.sort(key=lambda k: k.status, reverse=True)
         item_view_model = view_model.ViewModel(items)
-        if current_user == 'writer' or current_user is None:
+        if current_user == 'writer':
             return render_template('index_writer.html', view_model=item_view_model)
         else:
             return render_template('index_reader.html', view_model=item_view_model)
+        
 
     @app.route('/add', methods=['Post'])
     @login_required
     def add_todo():
         if current_user == 'writer':
-            trello.create_new_item(request.form.get('title'))
+            mongo.create_new_item(request.form.get('title'))
             return redirect('/')
         else:
             return redirect('/')
@@ -40,7 +41,7 @@ def create_app():
     @login_required
     def update_status_doing(todo_id):
         if current_user == 'writer':
-            trello.update_item_doing(todo_id)
+            mongo.update_item_doing(todo_id)
             return redirect('/')
         else:
             return redirect('/')
@@ -49,7 +50,7 @@ def create_app():
     @login_required
     def update_status_done(todo_id):
         if current_user == 'writer':
-            trello.update_item_done(todo_id)
+            mongo.update_item_done(todo_id)
             return redirect('/')
         else:
             return redirect('/')
@@ -58,7 +59,7 @@ def create_app():
     @login_required
     def remove_item(todo_id):
         if current_user == 'writer':
-            trello.delete_item(todo_id)
+            mongo.delete_item(todo_id)
             return redirect('/')
         else:
             return redirect('/')

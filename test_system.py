@@ -8,12 +8,14 @@ from selenium.webdriver.common.keys import Keys
 import dotenv
 import requests
 import pymongo
+from flask_config import Config
  
 @pytest.fixture(scope='module')
 def test_app():
 
     file_path = dotenv.find_dotenv('.env') 
     dotenv.load_dotenv(file_path, override=True) 
+    Config.LOGIN_DISABLED = True
 
     test_db = "todo_test_db"
     os.environ['Mongo_db'] = test_db
@@ -35,7 +37,7 @@ def test_app():
 @pytest.fixture(scope="module")
 def driver():  
     opts = webdriver.ChromeOptions() 
-    opts.add_argument('--headless')   
+    #opts.add_argument('--headless')   
     opts.add_argument('--no-sandbox') 
     opts.add_argument('--disable-dev-shm-usage')   
     with webdriver.Chrome('./chromedriver', options=opts) as driver:   

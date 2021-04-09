@@ -22,7 +22,7 @@ def create_app():
         items = mongo.fetch_all_items()
         items.sort(key=lambda k: k.status, reverse=True)
         item_view_model = view_model.ViewModel(items)
-        if current_user == 'writer':
+        if current_user == 'writer' or current_user is None:
             return render_template('index_writer.html', view_model=item_view_model)
         else:
             return render_template('index_reader.html', view_model=item_view_model)

@@ -14,6 +14,7 @@ from flask_config import Config
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config())
+    app.config['LOGIN_DISABLED'] = os.environ.get('LOAD_DISABLED', 'False')
     login_manager.login_manager.init_app(app)
 
     @app.route('/', methods=['Get'])

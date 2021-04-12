@@ -16,6 +16,9 @@ def client():
     file_path = dotenv.find_dotenv('.env.test') 
     dotenv.load_dotenv(file_path, override=True)    
     
+    test_login = 'True'
+    os.environ['LOAD_DISABLED'] = test_login
+    
     # Create the new app.     
     test_app = app.create_app()   
     

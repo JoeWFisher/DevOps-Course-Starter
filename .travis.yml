@@ -7,6 +7,7 @@ env:
   
   stages:
   - test
+  - dockerhub
   - deploy
 
 
@@ -23,6 +24,13 @@ jobs:
         - docker run --env-file .env.test my-test-image test_items.py
         - docker run -e Mongo_Url my-test-image test_system.py
 
+    - stage: dockerhub
+      script:
+        #DockerHub
+        - echo $DockerPassword | docker login --username joefish29 --password-stdin
+        - docker build --target production --tag joefish29/todo-app:latest .
+        - docker push joefish29/todo-app:latest
+
     - stage: deploy
       script: skip
       deploy:
@@ -34,9 +42,5 @@ jobs:
         - docker push registry.heroku.com/todoapp-joefish/web
         - heroku container:release web -a todoapp-joefish
 
-        #DockerHub
-        - echo $DockerPassword | docker login --username joefish29 --password-stdin
-        - docker build --target production --tag joefish29/todo-app:latest .
-        - docker push joefish29/todo-app:latest
       on:
         branch: master

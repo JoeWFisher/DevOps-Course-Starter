@@ -14,7 +14,7 @@ from flask_config import Config
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config())
-    app.config['LOGIN_DISABLED'] = os.environ.get('LOAD_DISABLED', 'False')
+    app.config['LOGIN_DISABLED'] = os.environ.get('LOAD_DISABLED', 'False').lower() in ['true', '1']
     login_manager.login_manager.init_app(app)
 
     @app.route('/', methods=['Get'])
@@ -45,7 +45,6 @@ def create_app():
     def update_status_doing(todo_id):
         mongo.update_item_doing(todo_id)
         return redirect('/')
-
 
     @app.route('/done_item/<todo_id>', methods=['Post'])
     @login_required

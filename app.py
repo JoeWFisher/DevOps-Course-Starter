@@ -22,10 +22,13 @@ def create_app():
         items = mongo.fetch_all_items()
         items.sort(key=lambda k: k.status, reverse=True)
         item_view_model = view_model.ViewModel(items)
-        if current_user == 'writer':
-            return render_template('index_writer.html', view_model=item_view_model)
-        elif current_user == 'reader':
-            return render_template('index_reader.html', view_model=item_view_model)
+        if hasattr('current_user', 'role'):
+            if current_user.role == 'writer':
+                return render_template('index_writer.html', view_model=item_view_model)
+            elif current_user.role == 'reader':
+                return render_template('index_reader.html', view_model=item_view_model)
+            else:
+                return render_template('index_writer.html', view_model=item_view_model)
         else:
             return render_template('index_writer.html', view_model=item_view_model)
         

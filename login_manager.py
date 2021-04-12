@@ -3,6 +3,7 @@ from flask import session, redirect
 from oauthlib.oauth2 import WebApplicationClient
 import requests
 import os
+from user import User
 
 login_manager = LoginManager()
 
@@ -16,7 +17,4 @@ def unauthenticated():
 @login_manager.user_loader
 def load_user(user_id):
     
-    if user_id == '47788504':
-        return 'writer'
-    else:
-        return 'reader'
+    return User(user_id)

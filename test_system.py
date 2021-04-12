@@ -15,7 +15,9 @@ def test_app():
 
     file_path = dotenv.find_dotenv('.env') 
     dotenv.load_dotenv(file_path, override=True) 
-    os.environ['LOAD_DISABLED'] = 'True'
+    
+    test_login = 'True'
+    os.environ['LOAD_DISABLED'] = test_login
 
     test_db = "todo_test_db"
     os.environ['Mongo_db'] = test_db

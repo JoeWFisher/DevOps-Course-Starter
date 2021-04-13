@@ -4,43 +4,33 @@ env:
   - secure: D1mYdwt1Vz0CQbZJx/87AgmKIGV1qdaDPGABoSz5YchS8NrsFXkcty+WfytpiBfWqx/8mXaT0Y6MUcl888L6gRoGSVjRsWu7l5KhchiRTStW63frm1VkClvJIk5PTZvyH8S7XJNJ7TjqUhtlXk3BsMzFSqor456ssc7rpEI+WIdRmV4VwMuIXe35W/mJs3kXEJXTks2DkUSzjKYD8yOQA7mnsv2J/q0WaPDZGagAD7AMH89/Tveku970UvrbOIIBpzhA4TA04OW/d1pwotod/lZnTDp8N722yGaKeCO+ehw/IolMNLY/ivKWyZxfibP9TUaTOY1h0lwLj2VmixAvlSZdwmfFDO69mbB8tRQ3aNI6bX7gmWTnGcPh2aZ6cnHPrZ43C2jVAP0YOHZ7Rmc+U22wHyfgHsPmP36t2mJrN3AjB8vhcY10g9GuhRQ9AHX5A8Os5jET/7RoC0o03xBCXc+fTngkASyaSmavnIhZK3pUs66fH71GOE0IujtvhtvMJFOWn5mxEWUURfyZ+X/bRoG5+Q+sFgSH41humJEc+PDfj3AiyVtmYYve1QD1xeKW1UDAtCkhV0gZCeGrhloDRaWUDFh3svRSJdW6R8+QJf327NnLk2kBVLuKQTOUGgTeo+rLbk6EKc3kWBCxG8iYX6LBqDUIiQyxA9YwpjWYnAo=
   - secure: DrMltpsD/jH2f8ky5Dhq9a7p/WcriPV7EMv9wEjDCcfPvaWD6fag/GbbSQn3c1Jp5wtAzWs1DsrX/M54shhMPtNVoP+xgGNPK4NT9L43xIsmzZEncVBJZt62s2sN7panj4DGoS9i+LKJHGrpclJWSovrGKa+FsdJLw0t+Zm1W6ZtbC7ba6otAKtYzNohB8zbcPgM7QR+t6a2IDgVuMV6kN+k25/05Pi31b7vk/nxWM9ilJO3ImZBZopZlDAsN6PLMju20vBfz/Ax9wfHDPkfx5/VpEHLBcOcu/IvfHNO2oNziC70x7XkHkyuYvNm1QB2tNDhB1nI4JtHQZG0mP92d+oQh9JLQ5oy4HiFaj/hbzgFxpW7CeZC+KVCwOTdnGLqpz5EbxTspTcZ7ZdCKB4LrCsDi5KlgeFrdTogfwLT7X1l2T3JXsoADv0/gP9Uzh1i983yJvd+nSRujIuZzWxILRo5aFPg6LaUhVoZli4Hc/GOWM8sN0M29lTS2O8TIvHkwRWXyaIaME4tnI/DdFHi27Ef6UVTg6DYLRsni09gLLm+V3rkFOhRI4NsnX/AiuqDw080iRgYYKtA+/aYzN4Ar/dxNfV5zUgHTcnYYrR7zDmfTDVIQxHeaoPEjt6PoTqRiJLAlWRcJ4GhUGZYrgaNrtCsX8I4w0I0/fvN74I+nhQ=
   - Mongo_db=todo_db
+  - secure: oBJNQuqRB+W9ZpT8WUDN1tNAG9htU9gjAGsd2L3UFjUzXC1xzrydbqxxTEQ2ViKV8Tm/o7mu9FpBspmH5OCbBMaMlQE3X78Z2xepUKxFWgdZrqFUkfKyueL9hyF1rtg5B+IGaoYee8VM0xk6ZCKvfZZ+84H8WMWAttLotfjK5vkChU0y0J4pA8AujrNc9mTAmZHQCZgu7sNxnkBCpZpM2J50/Y+4CCpACC/w3CWOKwydE/Lix9GXlILA6pt22Dod+1zkLCmYxPtQyXoXnzVmp/T+j2ywh+wG0PCOkayvnhKJ+LTiBYcZcdExti+Vetbu0MCMqv1hEBLFRXUNoG4YYR4uq1jhsgBmz8kSu78f76b97pPgjKZdpWuznrvmhyA2wqw+gJGfA1HhpIbNBLirHvcqM+agKdlj8UkVij5haLtgaSyWIl5MC/3vwBB87P+deGhST/Llp59HYVeI7oBCc/QDBa/MKFIFHcor17lKl0R2hE8evL3cO+n/sEKSmCY310XLYivWvtckQdWp+UIBEVsUo6f3iIVtdU7GXWeDC6tj+uB6YRDNDuyJc+fOr/c7Wv1BrBWucuwZKrZKE2ykH5KmK5VQ0MGCzQnZKBbGJLsTjvupanWOCH6ONorpR+veozv1xHVtiKSVzVA/8AY9B+FvWKuWFlZb7aOJPSQAKKA=
   
   stages:
   - test
   - dockerhub
   - deploy
-
-
+  
 jobs:
   include:
-    - stage: test
+  - stage: test
+    script:
+    - echo $DockerPassword | docker login --username joefish29 --password-stdin
+    - docker build --target test --tag my-test-image .
+    - docker run --env-file .env.test my-test-image test_client.py
+    - docker run --env-file .env.test my-test-image test_items.py
+    - docker run -e Mongo_Url my-test-image test_system.py
+
+  - stage: dockerhub
+    script:
+    - echo $DockerPassword | docker login --username joefish29 --password-stdin
+    - docker build --target production --tag joefish29/todo-app:latest .
+    - docker push joefish29/todo-app:latest
+
+  - stage: deploy
+    script: skip
+    deploy:
       script:
-        #Docker login
-        - echo $DockerPassword | docker login --username joefish29 --password-stdin
-
-        #Test
-        - docker build --target test --tag my-test-image .
-        - docker run --env-file .env.test my-test-image test_client.py
-        - docker run --env-file .env.test my-test-image test_items.py
-        - docker run -e Mongo_Url my-test-image test_system.py
-
-    - stage: dockerhub
-      script:
-        #DockerHub
-        - echo $DockerPassword | docker login --username joefish29 --password-stdin
-        - docker build --target production --tag joefish29/todo-app:latest .
-        - docker push joefish29/todo-app:latest
-
-    - stage: deploy
-      script: skip
-      deploy:
-        script:
-          #Heroku
-        - echo $HEROKU_API_KEY | docker login --username=_ --password-stdin registry.heroku.com
-        - docker pull joefish29/todo-app
-        - docker tag joefish29/todo-app registry.heroku.com/todoapp-joefish/web
-        - docker push registry.heroku.com/todoapp-joefish/web
-        - heroku container:release web -a todoapp-joefish
-
-      on:
-        branch: master
+      - curl -dh -X post az_cd_hook
+    on:
+      branch: master

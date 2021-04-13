@@ -68,9 +68,12 @@ def create_app():
         github_user_request_param = github_client.add_token("https://api.github.com/user")
         github_user = requests.get(github_user_request_param[0], headers=github_user_request_param[1]).json()
 
-        login_user(User(github_user['id']))
+        login_user(User(github_user))
+
+        mongo.add_user_mongo(current_user)
 
         return redirect('/') 
+
     if __name__ == '__main__':
         app.run()  
     

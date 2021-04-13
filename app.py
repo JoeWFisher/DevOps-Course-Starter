@@ -14,7 +14,7 @@ from flask_config import Config
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config())
-    app.config['LOGIN_DISABLED'] = os.environ.get('LOAD_DISABLED', 'False')
+    app.config['LOGIN_DISABLED'] = os.environ.get('LOAD_DISABLED', 'False').lower() in ['true', '1']
     login_manager.login_manager.init_app(app)
 
     @app.route('/', methods=['Get'])
@@ -64,7 +64,7 @@ def create_app():
         callback_code = request.args.get("code")
         github_client =  WebApplicationClient(os.environ.get('clientId'))
         github_token = github_client.prepare_token_request("https://github.com/login/oauth/access_token", code=callback_code) 
-        github_access = requests.post(github_token[0], headers=github_token[1], data=github_token[2], auth=(os.environ.get('clientId'), os.environ.get('client-secret')))
+        github_access = requests.post(github_token[0], headers=github_token[1], data=github_token[2], auth=(os.environ.get('clientId'), os.environ.get('client_secret')))
         github_json = github_client.parse_request_body_response(github_access.text)
         github_user_request_param = github_client.add_token("https://api.github.com/user")
         github_user = requests.get(github_user_request_param[0], headers=github_user_request_param[1]).json()

@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% block title %}To-Do App{% endblock %}
+
+{% block content %}
+<div class="jumbotron">
+  <h1 class="display-4">To-Do App</h1>
+  <p class="lead">Just another to-do app.</p>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <h2>Users</h2>
+    <ul class="list-group mb-4">
+      {% for user in users %}
+      <li class="list-group-item" style="text-align: left">
+        {{ user.name }} - {{ user.role }}
+        <div style="text-align: right">
+          <form action="/users/make_admin/{{ user.id }}" method="POST" style="display:inline-block">
+            <button class="btn btn-outline-secondary btn-sm" type="submit" id="make_admin">Make admin</button>
+          </form>
+          <form action="/users/make_reader/{{ user.id }}" method="POST" style="display:inline-block">
+            <button class="btn btn-outline-secondary btn-sm" type="submit" id="make_reader">Make reader</button>
+          </form>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+
+{% endblock %}

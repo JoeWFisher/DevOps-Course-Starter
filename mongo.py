@@ -5,6 +5,7 @@ import os
 import pymongo
 import datetime
 from bson import ObjectId
+from user import User
 
 
 def fetch_all_items():
@@ -87,4 +88,67 @@ def delete_trello_board():
     client = pymongo.MongoClient(Mongo_Url)
     client.drop_database(Mongo_db)
 
+def add_user_mongo(current_user):
+    Mongo_Url = os.environ.get('Mongo_Url')
+    Mongo_db = os.environ.get('Mongo_db')
+    client = pymongo.MongoClient(Mongo_Url)
+
+    db = client[Mongo_db]
+    col = db.ToDoUsers
+
+    user = {"name": current_user.name, "id": current_user.id, "role": current_user.role}
+    col.insert_one(user).inserted_id
+
+def fetch_user(user_id):
+    Mongo_Url = os.environ.get('Mongo_Url')
+    Mongo_db = os.environ.get('Mongo_db')
+    client = pymongo.MongoClient(Mongo_Url)
+
+    db = client[Mongo_db]
+    col = db.ToDoUsers
+
+    user = []
+    
+    user = col.find_one({'id': int(user_id)})
+
+    return user
+
+def fetch_all_users():
+    Mongo_Url = os.environ.get('Mongo_Url')
+    Mongo_db = os.environ.get('Mongo_db')
+    item_list = []
+
+    client = pymongo.MongoClient(Mongo_Url)
+    db = client[Mongo_db]
+    col = db.ToDoUsers
+    for user in col.find():
+        item_list.append({'name':user['name'], 'role':user['role'], 'id':user['id']})
+    
+    return item_list
+
+def make_admin(userid):
+    Mongo_Url = os.environ.get('Mongo_Url')
+    Mongo_db = os.environ.get('Mongo_db')
+
+    client = pymongo.MongoClient(Mongo_Url)
+    db = client[Mongo_db]
+    col = db.ToDoUsers
+
+    myquery = {"id": int(userid)}
+    newvalues = {"$set": { "role": "admin"}}
+
+    col.update_one(myquery, newvalues)  
+
+def make_reader(userid):
+    Mongo_Url = os.environ.get('Mongo_Url')
+    Mongo_db = os.environ.get('Mongo_db')
+
+    client = pymongo.MongoClient(Mongo_Url)
+    db = client[Mongo_db]
+    col = db.ToDoUsers
+
+    myquery = {"id": int(userid)}
+    newvalues = {"$set": { "role": "reader"}}
+
+    col.update_one(myquery, newvalues) 
 

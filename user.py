@@ -5,11 +5,8 @@ class User(UserMixin):
 
         self.id = user_id['id']
         self.name = user_id['login']
-
-
-    @property
-    def role(self):
-        if self.id == 47788504:
-            return 'admin'
-        else:
-            return 'reader'
+        
+        try:
+            self.role = user_id['role']
+        except KeyError:
+            self.role = 'reader'

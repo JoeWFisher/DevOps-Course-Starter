@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 import mongo as mongo
 import view_model as view_model
 import dotenv
@@ -73,6 +73,29 @@ def create_app():
         mongo.add_user_mongo(current_user)
 
         return redirect('/') 
+
+    @app.route('/users', methods=['Get'])
+    @login_required
+    def users():
+        if current_user.role == 'admin':
+            users = mongo.fetch_all_users()
+            return render_template('index_users.html', users=users)
+        else:
+            flash('You do not have access. Please contact an admin')
+            return redirect('/')
+
+    @app.route('/users/make_admin/<userid>', methods=['Post'])
+    @login_required
+    def make_admin(userid):
+        mongo.make_admin(userid)
+        return  redirect('/users')
+
+    @app.route('/users/make_reader/<userid>', methods=['Post'])
+    @login_required
+    def make_reader(userid):
+        mongo.make_reader(userid)
+        return  redirect('/users')
+
 
     if __name__ == '__main__':
         app.run()  

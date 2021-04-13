@@ -22,3 +22,4 @@ def load_user(github_user):
     user['login'] = user.pop('name')
 
     return User(user)
+

@@ -113,5 +113,42 @@ def fetch_user(user_id):
 
     return user
 
+def fetch_all_users():
+    Mongo_Url = os.environ.get('Mongo_Url')
+    Mongo_db = os.environ.get('Mongo_db')
+    item_list = []
 
+    client = pymongo.MongoClient(Mongo_Url)
+    db = client[Mongo_db]
+    col = db.ToDoUsers
+    for user in col.find():
+        item_list.append({'name':user['name'], 'role':user['role'], 'id':user['id']})
+    
+    return item_list
+
+def make_admin(userid):
+    Mongo_Url = os.environ.get('Mongo_Url')
+    Mongo_db = os.environ.get('Mongo_db')
+
+    client = pymongo.MongoClient(Mongo_Url)
+    db = client[Mongo_db]
+    col = db.ToDoUsers
+
+    myquery = {"id": int(userid)}
+    newvalues = {"$set": { "role": "admin"}}
+
+    col.update_one(myquery, newvalues)  
+
+def make_reader(userid):
+    Mongo_Url = os.environ.get('Mongo_Url')
+    Mongo_db = os.environ.get('Mongo_db')
+
+    client = pymongo.MongoClient(Mongo_Url)
+    db = client[Mongo_db]
+    col = db.ToDoUsers
+
+    myquery = {"id": int(userid)}
+    newvalues = {"$set": { "role": "reader"}}
+
+    col.update_one(myquery, newvalues) 
 

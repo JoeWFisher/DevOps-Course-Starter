@@ -119,3 +119,9 @@ config.py
 geckodriver.log
 .vagrant/
 env_file
+
+### Terraform ###
+.terraform.lock.hcl
+**/.terraform/*
+terraform.tfstate
+terraform.tfstate.backup

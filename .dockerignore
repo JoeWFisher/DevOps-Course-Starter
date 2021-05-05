@@ -123,3 +123,7 @@ env/
 config.py
 geckodriver.log
 .vagrant/
+
+### Terraform ###
+.terraform.lock.hcl
+**/.terraform/*

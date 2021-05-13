@@ -37,8 +37,12 @@ def create_app():
     @app.route('/add', methods=['Post'])
     @login_required
     def add_todo():
-        mongo.create_new_item(request.form.get('title'))
-        return redirect('/')
+        if current_user.role == 'writer':
+            mongo.create_new_item(request.form.get('title'))
+            return redirect('/')
+        else :
+            flash('You do not have access. Please contact an admin')
+            return redirect('/')
 
     @app.route('/doing_item/<todo_id>', methods=['Post'])
     @login_required

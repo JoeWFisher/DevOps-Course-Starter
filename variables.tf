@@ -7,5 +7,10 @@ variable "location" {
 }
 variable "clientId" {
  description = "The Github client Id env variable"
- default     = "dbe8e2efaedaa929cc70"
+ default     = "b2aeabde28d46d2b4551"
+}
+
+variable "client_secret" {
+ description = "The Gihub OAuth app secret"
+ default = "1cecb9eeff3882645d3c64c79c56a66e6cc190fd"
 }

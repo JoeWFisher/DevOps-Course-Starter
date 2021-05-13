@@ -13,7 +13,7 @@ data "azurerm_resource_group" "main" {
  name = "SoftwirePilot_JosephFisher_ProjectExercise"
 }
 resource "azurerm_app_service_plan" "main" {
- name = "${var.prefix}-asp"
+ name = "${var.prefix}-asp-tf"
  location = var.location
  resource_group_name = data.azurerm_resource_group.main.name
  kind = "Linux"
@@ -23,24 +23,7 @@ resource "azurerm_app_service_plan" "main" {
   size = "B1"
  }
 }
-resource "azurerm_app_service" "main" {
- name = "${var.prefix}-terraform"
- location = var.location
- resource_group_name = data.azurerm_resource_group.main.name
- app_service_plan_id = azurerm_app_service_plan.main.id
- site_config {
-  app_command_line = ""
-  linux_fx_version = "DOCKER|joefish29/todo-app:latest"
- }
- app_settings = {
-  "DOCKER_REGISTRY_SERVER_URL" = "https://index.docker.io"
- }
- connection_string {
-  name = "MONGODB_CONNECTION_STRING"
-  type = "APIHub"
-  value = "mongodb://${azurerm_cosmosdb_account.main.name}:${azurerm_cosmosdb_account.main.primary_key}@${azurerm_cosmosdb_account.main.name}.mongo.cosmos.azure.com:10255/DefaultDatabase?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000" 
- }
-}
+
 resource "azurerm_cosmosdb_account" "main" {
   name                = "${var.prefix}-cosmosdb-account"
   resource_group_name = data.azurerm_resource_group.main.name
@@ -68,6 +51,29 @@ resource "azurerm_cosmosdb_mongo_database" "main" {
  resource_group_name = data.azurerm_resource_group.main.name
  account_name = azurerm_cosmosdb_account.main.name
  #lifecycle {
-  # prevent_destroy = true
+  #prevent_destroy = true
  #}
 } 
+resource "azurerm_app_service" "main" {
+ name = "${var.prefix}-terraform"
+ location = var.location
+ resource_group_name = data.azurerm_resource_group.main.name
+ app_service_plan_id = azurerm_app_service_plan.main.id
+ site_config {
+  app_command_line = ""
+  linux_fx_version = "DOCKER|joefish29/todo-app:latest"
+ }
+ app_settings = {
+  "DOCKER_REGISTRY_SERVER_URL" = "https://index.docker.io/v1"
+  "clientId" = var.clientId
+  "client_secret" = var.client_secret
+  "FLASK_APP" = "app"
+  "FLASK_ENV" = "developement"
+  "PORT" = 5000
+  "LOAD_DISABLED" = ""
+  "SECRET_KEY" = "real_key"
+  "Mongo_db" = "todo_db"
+  "Mongo_Url" = "mongodb://${azurerm_cosmosdb_account.main.name}:${azurerm_cosmosdb_account.main.primary_key}@${azurerm_cosmosdb_account.main.name}.mongo.cosmos.azure.com:10255/DefaultDatabase?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000"
+ }
+ 
+}

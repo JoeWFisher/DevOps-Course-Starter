@@ -4,6 +4,10 @@ import view_model as view_model
 import dotenv
 from flask_login import login_required, login_user, current_user
 import login_manager as login_manager
+from oauthlib.oauth2 import WebApplicationClient
+import os
+import requests
+import json
 from user import User
 from flask_config import Config
 

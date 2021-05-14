@@ -36,7 +36,7 @@ jobs:
       - terraform init
 
   - stage: before_deploy
-  before_deploy:
+    before_deploy:
     - echo $DockerPassword | docker login --username joefish29 --password-stdin
     - docker build --target production --tag joefish29/todo-app:latest .
     - docker push joefish29/todo-app:latest

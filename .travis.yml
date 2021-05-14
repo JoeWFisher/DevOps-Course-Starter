@@ -1,3 +1,5 @@
+language: python
+
 env:
   global:
   - secure: lFak7oRDvrUpzXkYEEHzFnPQiJhqnKx01oINSQirg/4KXnENzHKe1laz9dxi1l/nR6GSLyKcjkvUNUEaF6DKY4/Sv0OnivWLba9L6BebRw3+SC3NfakZS9DbTZKFMFS4F7BM4nuOEeSDZxn7Uab5Gx7Z4O73IMOmxtBkdK+YUth3iZJ9VVXaJkdaPurPmoKRxlg+ehIirwX6TX/ewpq1soOPH+CZ3HMxd6RRpxj0hp12Vwevh6/uDFJH4c34RG6SIR1kGN/r/gcq4vrkdz35YjbdhU0K52JQc27D8P5yhhP/THDh/EZS6Kxk1ou10P0yfm3hWNpp2Z+aO4wuokLTbVcygLxA+nMRy6/GioOOKM6e0iINjnz/c/RlCgImQeaWgHuXTjib0/M5tG3OpltDA5eDRhpGcarS26fzq4Sb8j3cP5C5MFuhj4k+rE0EQlzQqjnLEo8Wzo1f4KnYFW4SIRrNbWHHyorRERIw5STMX0JB8Xkit84MF20w3NMRQs6qDF6AkJVY/OUFUgupeXXjQaALHcQG74u2F+4bq38uiC387kKMzbA/b5N51ZQkeJipPjo5tMpS+HXU54QEbJAKkmavQhuBgCqLSUlRRxGt2l6f+Ny9AT53/WIMB3V3y9nZlr8glhyItcKEVVBAWd7d252U+6ylymx30REkDpYCHeQ=
@@ -41,6 +43,8 @@ jobs:
     - docker build --target production --tag joefish29/todo-app:latest .
     - docker push joefish29/todo-app:latest
     - terraform apply -var prefix=todoapp -auto-approve
+    on:
+      branch: master
 
   - stage: deploy
     deploy:

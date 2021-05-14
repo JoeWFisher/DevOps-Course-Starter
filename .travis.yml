@@ -31,11 +31,12 @@ jobs:
 
   - stage: install
     install:
-      - wget https://releases.hashicorp.com/terraform/"$TF_VERSION"/terraform_"$TF_VERSION"_linux_amd64.zip
-      - unzip terraform_"$TF_VERSION"_linux_amd64.zip
-      - sudo mv terraform /usr/local/bin/
-      - rm terraform_"$TF_VERSION"_linux_amd64.zip
-      - terraform init
+    - wget https://releases.hashicorp.com/terraform/"$TF_VERSION"/terraform_"$TF_VERSION"_linux_amd64.zip
+    - unzip terraform_"$TF_VERSION"_linux_amd64.zip
+    - sudo mv terraform /usr/local/bin/
+    - rm terraform_"$TF_VERSION"_linux_amd64.zip
+    - terraform init
+    - terraform plan
 
   - stage: before_deploy
     before_deploy:

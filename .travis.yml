@@ -36,14 +36,14 @@ jobs:
     - sudo mv terraform /usr/local/bin/
     - rm terraform_"$TF_VERSION"_linux_amd64.zip
     - terraform init
-    - terraform plan -var prefix=todoapp -auto-approve
+    - terraform plan
 
   - stage: before_deploy
     before_deploy:
     - echo $DockerPassword | docker login --username joefish29 --password-stdin
     - docker build --target production --tag joefish29/todo-app:latest .
     - docker push joefish29/todo-app:latest
-    - terraform apply -var prefix=todoapp -auto-approve
+    - terraform apply -auto-approve
     on:
       branch: master
 

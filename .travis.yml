@@ -35,7 +35,8 @@ jobs:
     - unzip terraform_"$TF_VERSION"_linux_amd64.zip
     - sudo mv terraform /usr/local/bin/
     - rm terraform_"$TF_VERSION"_linux_amd64.zip
-    - terraform init
+    - terraform init -lock=false
+    - terraform plan -lock=false
 
   - stage: before_deploy
     before_deploy:

@@ -12,6 +12,3 @@ variable "client_secret" {
  description = "The Gihub OAuth app secret"
 }
 
-variable "access_key" {
-  description = "Storage account access key"
-}

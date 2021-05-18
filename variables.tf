@@ -15,3 +15,7 @@ variable "client_secret" {
 variable "access_key" {
   description = "Storage account access key"
 }
+
+variable "azurerm_key" {
+  
+}

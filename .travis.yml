@@ -48,6 +48,7 @@ jobs:
 
   - stage: deploy
     deploy:
+      provider: script
       script:
       - curl -dH -X POST "$(terraform output -raw travis_webhook)"
     on:

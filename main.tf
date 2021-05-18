@@ -3,7 +3,7 @@ terraform {
     resource_group_name = "SoftwirePilot_JosephFisher_ProjectExercise"
     storage_account_name = "storageaccountjosfis"
     container_name = "todoapp-container"
-    key = "8O1ytbiAe65qZQZS3Sx9pDppNbJWYWSTFfklEwcVN3p0ZFbxLn4YZ5I5vv9sejmqFdrFrTDwr39xhJMabdG87Q=="
+    key = var.azurerm_key
     
   }
 }

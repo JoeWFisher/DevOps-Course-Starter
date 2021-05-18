@@ -42,8 +42,6 @@ jobs:
     - docker build --target production --tag joefish29/todo-app:latest .
     - docker push joefish29/todo-app:latest
     - terraform apply -auto-approve
-    on:
-      branch: module_12
 
   
     deploy:

@@ -36,7 +36,7 @@ jobs:
     - sudo mv terraform /usr/local/bin/
     - rm terraform_"$TF_VERSION"_linux_amd64.zip
     - terraform init
-    - terraform plan
+    - echo $DockerPassword | docker login --username joefish29 --password-stdin
 
   - stage: before_deploy
     before_deploy:
@@ -45,7 +45,7 @@ jobs:
     - docker push joefish29/todo-app:latest
     - terraform apply -auto-approve
     on:
-      branch: master
+      branch: module_12
 
   - stage: deploy
     deploy:

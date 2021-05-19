@@ -44,7 +44,7 @@ jobs:
     - docker push joefish29/todo-app:latest
     - terraform apply -var prefix=todoapp -var location=uksouth -var clientId=clientId -var client_secret=client_secret -auto-approve
     on:
-      branch: module_12
+      branch: master
 
   - stage: deploy
     deploy:

@@ -39,7 +39,7 @@ jobs:
     - echo $DockerPassword | docker login --username joefish29 --password-stdin
     - docker build --target production --tag joefish29/todo-app:latest .
     - docker push joefish29/todo-app:latest
-    - terraform apply -auto-approve
+    - terraform apply -var prefix=todoapp -var location=uksouth -var clientId=b2aeabde28d46d2b4551 -var client_secret=1cecb9eeff3882645d3c64c79c56a66e6cc190fd -auto-approve
 
   #- stage: before_deploy
   #  before_deploy:

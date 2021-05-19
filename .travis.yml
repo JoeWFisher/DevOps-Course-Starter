@@ -36,11 +36,7 @@ jobs:
     - sudo mv terraform /usr/local/bin/
     - rm terraform_"$TF_VERSION"_linux_amd64.zip
     - terraform init
-    - echo $DockerPassword | docker login --username joefish29 --password-stdin
-    - docker build --target production --tag joefish29/todo-app:latest .
-    - docker push joefish29/todo-app:latest
-    - terraform apply -var prefix=todoapp -var location=uksouth -var clientId=b2aeabde28d46d2b4551 -var client_secret=1cecb9eeff3882645d3c64c79c56a66e6cc190fd -auto-approve
-
+    
   #- stage: before_deploy
   #  before_deploy:
   #  - echo $DockerPassword | docker login --username joefish29 --password-stdin
@@ -50,10 +46,10 @@ jobs:
   #  on:
   #    branch: module_12
 
-  - stage: deploy
-    deploy:
-      provider: script
-      script:
-      - curl -dH -X POST "$(terraform output -raw travis_webhook)"
-    on:
-      branch: master
+  #- stage: deploy
+  #  deploy:
+  #    provider: script
+  #    script:
+  #    - curl -dH -X POST "$(terraform output -raw travis_webhook)"
+  #  on:
+  #    branch: master

@@ -38,7 +38,7 @@ def create_app():
     @login_required
     def add_todo():
         if current_user.is_active == True:
-            if current_user.role == 'writer':
+            if current_user.role == 'writer' or current_user == 'admin':
                 mongo.create_new_item(request.form.get('title'))
                 return redirect('/')
             else :

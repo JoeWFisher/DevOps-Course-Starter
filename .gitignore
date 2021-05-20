@@ -126,3 +126,4 @@ env_file
 terraform.tfstate
 terraform.tfstate.backup
 terraform.tfvars
+

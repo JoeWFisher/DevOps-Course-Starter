@@ -15,8 +15,6 @@ env:
   
   stages:
   - test
-  - install
-  - before_deploy
   - deploy
 
 jobs:
@@ -29,25 +27,22 @@ jobs:
     - docker run --env-file .env.test my-test-image test_items.py
     - docker run -e Mongo_Url my-test-image test_system.py
 
-  - stage: install
-    script:
+  - stage: deploy
+    install:
     - wget https://releases.hashicorp.com/terraform/"$TF_VERSION"/terraform_"$TF_VERSION"_linux_amd64.zip
     - unzip terraform_"$TF_VERSION"_linux_amd64.zip
     - sudo mv terraform /usr/local/bin/
     - rm terraform_"$TF_VERSION"_linux_amd64.zip
     - terraform init
 
-  - stage: before_deploy
-    script:
+    before_deploy:
     - terraform apply -var prefix=todoapp -var location=uksouth -var clientId=clientId -var client_secret=client_secret -auto-approve
     - echo $DockerPassword | docker login --username joefish29 --password-stdin
     - docker build --target production --tag joefish29/todo-app:latest .
     - docker push joefish29/todo-app:latest
-    on:
-      branch: master
-
-  - stage: deploy
+    
     deploy:
+      skip_cleanup: true
       provider: script
       script:
       - curl -dH -X POST "$(terraform output -raw travis_webhook)"

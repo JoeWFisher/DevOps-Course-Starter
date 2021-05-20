@@ -121,9 +121,9 @@ geckodriver.log
 env_file
 
 ### Terraform ###
-.Terraform
+.terraform.lock.hcl
+**/.terraform/*
 terraform.tfstate
 terraform.tfstate.backup
-.terraform.lock.hcl
 terraform.tfvars
 

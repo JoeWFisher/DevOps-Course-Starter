@@ -4,6 +4,7 @@ from oauthlib.oauth2 import WebApplicationClient
 import requests
 import os
 from user import User
+import mongo as mongo
 
 login_manager = LoginManager()
 
@@ -15,6 +16,10 @@ def unauthenticated():
     return redirect(github_redirect)  
 
 @login_manager.user_loader
-def load_user(user_id):
+def load_user(github_user):
     
-    return User(user_id)
+    user = mongo.fetch_user(github_user)
+    user['login'] = user.pop('name')
+
+    return User(user)
+

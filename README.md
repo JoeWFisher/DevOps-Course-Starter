@@ -30,6 +30,9 @@ These need to be added to a .env file and include:
 ```
     * Mongo_Url
     * Mongo_db
+    * Github:
+        *client_Id
+        *client_secret_m10
 ```
 
 This project also uses Docker

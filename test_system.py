@@ -8,12 +8,16 @@ from selenium.webdriver.common.keys import Keys
 import dotenv
 import requests
 import pymongo
+from flask_config import Config
  
 @pytest.fixture(scope='module')
 def test_app():
 
     file_path = dotenv.find_dotenv('.env') 
     dotenv.load_dotenv(file_path, override=True) 
+    
+    test_login = 'True'
+    os.environ['LOAD_DISABLED'] = test_login
 
     test_db = "todo_test_db"
     os.environ['Mongo_db'] = test_db

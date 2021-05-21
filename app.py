@@ -16,7 +16,7 @@ def create_app():
     app.config.from_object(Config())
     app.config['LOGIN_DISABLED'] = os.environ.get('LOAD_DISABLED', 'False').lower() in ['true', '1']
     app.config['LOG_LEVEL'] = os.environ.get('LOG_LEVEL')
-    app.logger.setLevel(app.config['LOG_LEVEL'])
+    app.logger.setLevel(os.environ.get('LOG_LEVEL'))
     login_manager.login_manager.init_app(app)
 
     @app.route('/', methods=['Get'])

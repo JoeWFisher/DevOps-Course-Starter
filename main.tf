@@ -74,6 +74,7 @@ resource "azurerm_app_service" "main" {
   "FLASK_ENV" = "developement"
   "LOAD_DISABLED" = ""
   "SECRET_KEY" = "real_key"
+  "LOG_LEVEL" = "DEBUG"
   "Mongo_db" = "todoapp-cosmos-mongo-db"
   "Mongo_Url" = "mongodb://${azurerm_cosmosdb_account.main.name}:${azurerm_cosmosdb_account.main.primary_key}@${azurerm_cosmosdb_account.main.name}.mongo.cosmos.azure.com:10255/DefaultDatabase?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000"
  }

@@ -56,21 +56,24 @@ def create_app():
     @login_required
     def update_status_doing(todo_id):
         mongo.update_item_doing(todo_id)
-        app.logger.info("User %s set Todo item Id '%s' to 'Doing'", current_user.name, todo_id)
+        if current_user.is_active:
+            app.logger.info("User %s set Todo item Id '%s' to 'Doing'", current_user.name, todo_id)
         return redirect('/')
 
     @app.route('/done_item/<todo_id>', methods=['Post'])
     @login_required
     def update_status_done(todo_id):
         mongo.update_item_done(todo_id)
-        app.logger.info("User %s set Todo item Id '%s' to 'Done'", current_user.name, todo_id)
+        if current_user.is_active:
+            app.logger.info("User %s set Todo item Id '%s' to 'Done'", current_user.name, todo_id)
         return redirect('/')
 
     @app.route('/delete/<todo_id>', methods=['Post'])
     @login_required
     def remove_item(todo_id):
         mongo.delete_item(todo_id)
-        app.logger.info("User %s deleted Todo item Id '%s'", current_user.name, todo_id)
+        if current_user.is_active:
+            app.logger.info("User %s deleted Todo item Id '%s'", current_user.name, todo_id)
         return redirect('/')
 
     @app.route('/login/callback')

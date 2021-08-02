@@ -10,6 +10,8 @@ import requests
 import json
 from user import User
 from flask_config import Config
+from loggly.handlers import HTTPSHandler
+from logging import Formatter
 
 def create_app():
     app = Flask(__name__)
@@ -17,6 +19,11 @@ def create_app():
     app.config['LOGIN_DISABLED'] = os.environ.get('LOAD_DISABLED', 'False').lower() in ['true', '1']
     app.config['LOG_LEVEL'] = os.environ.get('LOG_LEVEL')
     app.logger.setLevel(os.environ.get('LOG_LEVEL'))
+    app.config['LOGGLY_TOKEN'] = os.environ.get('LOGGLY_TOKEN')
+    if app.config['LOGGLY_TOKEN'] is not None:
+        handler = HTTPSHandler(f'https://logs-01.loggly.com/inputs/{app.config["LOGGLY_TOKEN"]}/tag/todo-app')
+        handler.setFormatter(Formatter("[%(asctime)s] %(levelname)s in %(module)s: %(message)s"))
+        app.logger.addHandler(handler)
     login_manager.login_manager.init_app(app)
 
     @app.route('/', methods=['Get'])

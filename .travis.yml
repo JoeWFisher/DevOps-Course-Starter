@@ -1,5 +1,4 @@
 language: bash
-
 env:
   global:
   - secure: lFak7oRDvrUpzXkYEEHzFnPQiJhqnKx01oINSQirg/4KXnENzHKe1laz9dxi1l/nR6GSLyKcjkvUNUEaF6DKY4/Sv0OnivWLba9L6BebRw3+SC3NfakZS9DbTZKFMFS4F7BM4nuOEeSDZxn7Uab5Gx7Z4O73IMOmxtBkdK+YUth3iZJ9VVXaJkdaPurPmoKRxlg+ehIirwX6TX/ewpq1soOPH+CZ3HMxd6RRpxj0hp12Vwevh6/uDFJH4c34RG6SIR1kGN/r/gcq4vrkdz35YjbdhU0K52JQc27D8P5yhhP/THDh/EZS6Kxk1ou10P0yfm3hWNpp2Z+aO4wuokLTbVcygLxA+nMRy6/GioOOKM6e0iINjnz/c/RlCgImQeaWgHuXTjib0/M5tG3OpltDA5eDRhpGcarS26fzq4Sb8j3cP5C5MFuhj4k+rE0EQlzQqjnLEo8Wzo1f4KnYFW4SIRrNbWHHyorRERIw5STMX0JB8Xkit84MF20w3NMRQs6qDF6AkJVY/OUFUgupeXXjQaALHcQG74u2F+4bq38uiC387kKMzbA/b5N51ZQkeJipPjo5tMpS+HXU54QEbJAKkmavQhuBgCqLSUlRRxGt2l6f+Ny9AT53/WIMB3V3y9nZlr8glhyItcKEVVBAWd7d252U+6ylymx30REkDpYCHeQ=
@@ -13,11 +12,10 @@ env:
   - secure: BoI7EzVy68Avk4wjcKpkHyBeqmt/VAghDGDM7EiTE3egfNz+pdvP+5f4L00+Ljx8TDavIERt99dg8vHrORFKt3QemjG0R4ombaJZkZeSlB3X+XXtDXDPr/02/eRPRuxrBrRnylK941kNE+jLH5LXr5oeUpXecFB0TL9vnmjiMHcO4Xe3Hr3UFXBl/jwrqeJMqys5L6hjft447isNNYmT9YPz+MOjkGa7ItPLMsbdVhzVh6oPdOFUai+azva7twGm/Y42d2LF0Hpmj3az+zw7UWh50PKxjxBrElaIkt+AGMqrYoXn58/3JJI1/c1Dq3XguR1xiFjsedqwcN65BrykKMaE9974/tYNZIdrpyXPoM1GhDzWpYVCvLEKfL9bJdaCbdRTSLSBF8YmccizEAqB4X+WaCUVfDIH/PNCMc2o5CfV2jZCUZPAFBs8pHNqbTcfEQGMhJaGnYGvTxTKzbiPZqImnGWgcnNRT9FB77JhM6yMOeFwPcwV6/7qwf0SVlPY2QIHS9lb5nqH2lT2x0Qv7eZpMHb3NJtMV+JxkSF+Lv3W8/kGxpljuixm6DJOfWV+ZCkOvjLpPryRYhG2Z7fMiVlhUxhHMQgnwdnjZ9WQ7YGLlO49ZAHMIlRaJdacN1JNj4Ka1vmreQ5kKSQK07UAMmJfZm03oZFikBo+SgAhJRQ=
   - TF_VERSION=0.14.7
   - LOG_LEVEL=DEBUG
-  
+  - secure: UA8Zv/WJ3LMFmli6gbmQr+kXpw7EDKkFNaQgxfJjUcN3TuG/+K+kAhdBvXGC3nvAgepUyrdb4w9WHpTxQexjKvL8pFhiEjUlr1BCJlZk9KJbYdbGGqwnMtWI+7/Iq7OzKr/xr1CW4hRWHnOhKoAKLFaiTU0XF+rcpeTK7DynNskojkP2gRmD3xOql01roMF2eA3Ge6OYz2e+sc/Ee3tC7Biyu5eRC9VA2BXskyIoBHqRRFqdSxuEKGEKwC+TLKXfVEaQp5ytEO9oXs8vIPdsSYKI8WIHJFEcEAkRp/xENe0L4QnCeLhh617id8Xvhsms1OtYZ+kzH93tBRkrN1ty1Dw0ANQg+bRx9ypoiNxxQliSqlDctuwTNKk+2ChVBKoPWJTZAeoMD4YGhsu4hcllm9iEqdMm3Fdkx0foqZW4nKMprfjhtdX+jUd6r9QXMheVyQjn3oEPfUzDsaGdHfXTGFg3hpFpZ53ji9Ftwrv4J4OGVf3XN+v7H6dCCEVl6vm37a6QclOmp/BSxURgwVMKPK4OtVC5K1Ap9dq4BrynzgAqSvEQ2AOSoDGahoq2QZCHq16R+aSOQ//6fZzdgT5GiTDjFNVJuQcSMEDGsjMTfWjnhRLJP9nBS6m1ggBJaRsOWLmuKFkgO76/QK/q3IuGSIe+ZpqKwYPQkAiFP/C36us=
   stages:
   - test
   - deploy
-
 jobs:
   include:
   - stage: test
@@ -27,7 +25,6 @@ jobs:
     - docker run --env-file .env.test my-test-image test_client.py
     - docker run --env-file .env.test my-test-image test_items.py
     - docker run -e Mongo_Url my-test-image test_system.py
-
   - stage: deploy
     install:
     - wget https://releases.hashicorp.com/terraform/"$TF_VERSION"/terraform_"$TF_VERSION"_linux_amd64.zip
@@ -35,13 +32,12 @@ jobs:
     - sudo mv terraform /usr/local/bin/
     - rm terraform_"$TF_VERSION"_linux_amd64.zip
     - terraform init
-
     before_deploy:
-    - terraform apply -var prefix=todoapp -var location=uksouth -var clientId=clientId -var client_secret=client_secret -auto-approve
+    - terraform apply -var prefix=todoapp -var location=uksouth -var clientId=clientId
+      -var client_secret=client_secret -auto-approve
     - echo $DockerPassword | docker login --username joefish29 --password-stdin
     - docker build --target production --tag joefish29/todo-app:latest .
     - docker push joefish29/todo-app:latest
-    
     deploy:
       skip_cleanup: true
       provider: script

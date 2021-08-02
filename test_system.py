@@ -21,6 +21,8 @@ def test_app():
 
     test_db = "todo_test_db"
     os.environ['Mongo_db'] = test_db
+
+    os.environ['LOG_LEVEL'] = 'DEBUG'
     
     # construct the new application   
     application = app.create_app()   

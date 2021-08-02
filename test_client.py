@@ -18,6 +18,8 @@ def client():
     
     test_login = 'True'
     os.environ['LOAD_DISABLED'] = test_login
+
+    os.environ['LOG_LEVEL'] = 'DEBUG'
     
     # Create the new app.     
     test_app = app.create_app()   

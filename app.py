@@ -10,11 +10,20 @@ import requests
 import json
 from user import User
 from flask_config import Config
+from loggly.handlers import HTTPSHandler
+from logging import Formatter
 
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config())
     app.config['LOGIN_DISABLED'] = os.environ.get('LOAD_DISABLED', 'False').lower() in ['true', '1']
+    app.config['LOG_LEVEL'] = os.environ.get('LOG_LEVEL')
+    app.logger.setLevel(app.config['LOG_LEVEL'])
+    app.config['LOGGLY_TOKEN'] = os.environ.get('LOGGLY_TOKEN')
+    if app.config['LOGGLY_TOKEN'] is not None:
+        handler = HTTPSHandler(f'https://logs-01.loggly.com/inputs/{app.config["LOGGLY_TOKEN"]}/tag/todo-app')
+        handler.setFormatter(Formatter("[%(asctime)s] %(levelname)s in %(module)s: %(message)s"))
+        app.logger.addHandler(handler)
     login_manager.login_manager.init_app(app)
 
     @app.route('/', methods=['Get'])
@@ -38,11 +47,13 @@ def create_app():
     @login_required
     def add_todo():
         if current_user.is_active == True:
-            if current_user.role == 'writer' or current_user == 'admin':
+            if current_user.role == 'writer' or current_user.role == 'admin':
                 mongo.create_new_item(request.form.get('title'))
+                app.logger.info("User %s added Todo item '%s'", current_user.name, request.form.get('title'))
                 return redirect('/')
             else :
                 flash('You do not have access. Please contact an admin')
+                app.logger.info("User %s attempted to add Todo item, incorrect permissions", current_user.name)
                 return redirect('/')
         else:
             mongo.create_new_item(request.form.get('title'))
@@ -52,18 +63,24 @@ def create_app():
     @login_required
     def update_status_doing(todo_id):
         mongo.update_item_doing(todo_id)
+        if current_user.is_active:
+            app.logger.info("User %s set Todo item Id '%s' to 'Doing'", current_user.name, todo_id)
         return redirect('/')
 
     @app.route('/done_item/<todo_id>', methods=['Post'])
     @login_required
     def update_status_done(todo_id):
         mongo.update_item_done(todo_id)
+        if current_user.is_active:
+            app.logger.info("User %s set Todo item Id '%s' to 'Done'", current_user.name, todo_id)
         return redirect('/')
 
     @app.route('/delete/<todo_id>', methods=['Post'])
     @login_required
     def remove_item(todo_id):
         mongo.delete_item(todo_id)
+        if current_user.is_active:
+            app.logger.info("User %s deleted Todo item Id '%s'", current_user.name, todo_id)
         return redirect('/')
 
     @app.route('/login/callback')
@@ -79,6 +96,7 @@ def create_app():
         login_user(User(github_user))
 
         mongo.add_user_mongo(current_user)
+        app.logger.info("User '%s' logged in successfully", current_user.name)
 
         return redirect('/') 
 
@@ -90,18 +108,21 @@ def create_app():
             return render_template('index_users.html', users=users)
         else:
             flash('You do not have access. Please contact an admin')
+            app.logger.info("User %s attempted to view Users page, incorrect permissions", current_user.name)
             return redirect('/')
 
     @app.route('/users/make_admin/<userid>', methods=['Post'])
     @login_required
     def make_admin(userid):
         mongo.make_admin(userid)
+        app.logger.info("User %s changed permission level of User Id '%s' to Admin", current_user.name, userid)
         return  redirect('/users')
 
     @app.route('/users/make_reader/<userid>', methods=['Post'])
     @login_required
     def make_reader(userid):
         mongo.make_reader(userid)
+        app.logger.info("User %s changed permission level of User Id '%s' to Reader", current_user.name, userid)
         return  redirect('/users')
 
 

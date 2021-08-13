@@ -3,7 +3,7 @@ terraform {
     resource_group_name = "SoftwirePilot_JosephFisher_ProjectExercise"
     storage_account_name = "storageaccountjosfis"
     container_name = "todoapp-container"
-    key = "8O1ytbiAe65qZQZS3Sx9pDppNbJWYWSTFfklEwcVN3p0ZFbxLn4YZ5I5vv9sejmqFdrFrTDwr39xhJMabdG87Q=="
+    key = "TodoAppAccessKey"
     
   }
 }
@@ -53,9 +53,9 @@ resource "azurerm_cosmosdb_mongo_database" "main" {
  resource_group_name = data.azurerm_resource_group.main.name
  account_name = azurerm_cosmosdb_account.main.name
 
- #lifecycle {
-  #prevent_destroy = true
- #}
+ lifecycle {
+  prevent_destroy = true
+ }
 } 
 resource "azurerm_app_service" "main" {
  name = "${var.prefix}-terraform"
@@ -74,7 +74,8 @@ resource "azurerm_app_service" "main" {
   "FLASK_ENV" = "developement"
   "LOAD_DISABLED" = ""
   "SECRET_KEY" = "real_key"
-  "Mongo_db" = "todo_db"
+  "LOG_LEVEL" = "DEBUG"
+  "Mongo_db" = "todoapp-cosmos-mongo-db"
   "Mongo_Url" = "mongodb://${azurerm_cosmosdb_account.main.name}:${azurerm_cosmosdb_account.main.primary_key}@${azurerm_cosmosdb_account.main.name}.mongo.cosmos.azure.com:10255/DefaultDatabase?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000"
  }
  
